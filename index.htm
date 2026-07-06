@@ -1,0 +1,2489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Misi Penyelamatan Planet: Agen Numerasi Peluang</title>
+  
+  <style>
+    /* ==========================================================================
+       1. DEKLARASI FONT SISTEM & GOOGLE FONTS (FALLBACK OFFLINE AMAN)
+       ========================================================================== */
+    /* Google Fonts dihapus agar game berjalan 100% offline tanpa akses internet.
+       Font akan otomatis jatuh ke font sistem (fallback) di bawah ini. */
+    
+    body {
+      font-family: 'Rajdhani', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle at center, #0b1528 0%, #030712 100%);
+      overflow: hidden;
+      user-select: none;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: #cbd5e1;
+    }
+    
+    .font-orbitron {
+      font-family: 'Orbitron', "Courier New", Courier, monospace;
+    }
+
+    /* Ratio 16:9 Container */
+    .game-container {
+      aspect-ratio: 16 / 9;
+      max-width: 100vw;
+      max-height: 100vh;
+      width: 177.78vh; /* 16/9 * height */
+      height: 56.25vw; /* 9/16 * width */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+
+    @media (min-aspect-ratio: 16/9) {
+      .game-container {
+        width: auto;
+        height: 100vh;
+      }
+    }
+
+    @media (max-aspect-ratio: 16/9) {
+      .game-container {
+        width: 100vw;
+        height: auto;
+      }
+    }
+
+    /* ==========================================================================
+       2. REPLIKA SISTEM UTILITAS TAILWIND SECARA LURING (100% OFFLINE EMULATION)
+       ========================================================================== */
+    .flex { display: flex !important; }
+    .flex-col { flex-direction: column !important; }
+    .items-center { align-items: center !important; }
+    .justify-center { justify-content: center !important; }
+    .justify-between { justify-content: space-between !important; }
+    .justify-start { justify-content: flex-start !important; }
+    .items-stretch { align-items: stretch !important; }
+    .flex-1 { flex: 1 1 0% !important; }
+    .shrink-0 { flex-shrink: 0 !important; }
+    
+    .grid { display: grid !important; }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+    
+    .gap-4 { gap: 1rem !important; }
+    .gap-3 { gap: 0.75rem !important; }
+    .gap-2 { gap: 0.5rem !important; }
+    .gap-2\.5 { gap: 0.625rem !important; }
+    .gap-1\.5 { gap: 0.375rem !important; }
+    
+    .w-full { width: 100% !important; }
+    .h-full { height: 100% !important; }
+    .w-8 { width: 2rem !important; }
+    .h-8 { height: 2rem !important; }
+    .w-10 { width: 2.5rem !important; }
+    .h-10 { height: 2.5rem !important; }
+    .w-12 { width: 3rem !important; }
+    .h-12 { height: 3rem !important; }
+    .w-24 { width: 6rem !important; }
+    .h-24 { height: 6rem; }
+    
+    .max-w-sm { max-width: 24rem !important; }
+    .max-w-md { max-width: 28rem !important; }
+    .max-w-lg { max-width: 32rem !important; }
+    .max-w-xl { max-width: 36rem !important; }
+    .max-w-xs { max-width: 20rem !important; }
+    .max-w-\[150px\] { max-width: 150px !important; }
+    .max-h-\[95\%\] { max-height: 95% !important; }
+    .max-h-\[85vh\] { max-height: 85vh !important; }
+    .max-h-\[85\%\] { max-height: 85% !important; }
+    
+    .absolute { position: absolute !important; }
+    .relative { position: relative !important; }
+    .inset-0 { top: 0 !important; right: 0 !important; bottom: 0 !important; left: 0 !important; }
+    .bottom-2 { bottom: 0.5rem !important; }
+    .right-2 { right: 0.5rem !important; }
+    .left-3 { left: 0.75rem !important; }
+    .top-1\/2 { top: 50% !important; }
+    .-translate-y-1\/2 { transform: translateY(-50%) !important; }
+    .left-1\/2 { left: 50% !important; }
+    .-translate-x-1\/2 { transform: translateX(-50%) !important; }
+    .-bottom-6 { bottom: -1.5rem !important; }
+    
+    .z-0 { z-index: 0 !important; }
+    .z-10 { z-index: 10 !important; }
+    .z-20 { z-index: 20 !important; }
+    .z-30 { z-index: 30; }
+    .z-50 { z-index: 50 !important; }
+    .fixed { position: fixed !important; }
+    
+    .p-1 { padding: 0.25rem !important; }
+    .p-1\.5 { padding: 0.375rem !important; }
+    .p-2 { padding: 0.5rem !important; }
+    .p-2\.5 { padding: 0.625rem !important; }
+    .p-3 { padding: 0.75rem !important; }
+    .p-4 { padding: 1rem !important; }
+    .p-6 { padding: 1.5rem !important; }
+    .pb-2 { padding-bottom: 0.5rem !important; }
+    .pb-3 { padding-bottom: 0.75rem !important; }
+    .pb-1\.5 { padding-bottom: 0.375rem !important; }
+    .pt-1 { padding-top: 0.25rem !important; }
+    .pt-2 { padding-top: 0.5rem !important; }
+    .pt-3 { padding-top: 0.75rem !important; }
+    .pr-1 { padding-right: 0.25rem !important; }
+    .px-2 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+    .px-3 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+    .px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+    .px-5 { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+    .px-6 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+    .px-8 { padding-left: 2rem !important; padding-right: 2rem !important; }
+    .px-9 { padding-left: 2.25rem !important; padding-right: 2.25rem !important; }
+    .py-0\.5 { padding-top: 0.125rem !important; padding-bottom: 0.125rem !important; }
+    .py-1 { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+    .py-1\.5 { padding-top: 0.375rem !important; padding-bottom: 0.375rem !important; }
+    .py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+    .py-2.5 { padding-top: 0.625rem !important; padding-bottom: 0.625rem !important; }
+    .py-3 { padding-top: 0.75rem !important; padding-bottom: 0.75rem !important; }
+    
+    .mb-1 { margin-bottom: 0.25rem !important; }
+    .mb-1\.5 { margin-bottom: 0.375rem !important; }
+    .mb-2 { margin-bottom: 0.5rem !important; }
+    .mb-3 { margin-bottom: 0.75rem !important; }
+    .mb-4 { margin-bottom: 1rem !important; }
+    .mt-1 { margin-top: 0.25rem !important; }
+    .mt-2 { margin-top: 0.5rem !important; }
+    .mt-3 { margin-top: 0.75rem !important; }
+    .mt-4 { margin-top: 1rem !important; }
+    .my-1 { margin-top: 0.25rem !important; margin-bottom: 0.25rem !important; }
+    .mx-auto { margin-left: auto !important; margin-right: auto !important; }
+    .ml-2 { margin-left: 0.5rem !important; }
+    .mr-1 { margin-right: 0.25rem !important; }
+    
+    .rounded { border-radius: 0.25rem !important; }
+    .rounded-lg { border-radius: 0.5rem !important; }
+    .rounded-xl { border-radius: 0.75rem !important; }
+    .rounded-full { border-radius: 9999px !important; }
+    .border { border: 1px solid rgba(255, 255, 255, 0.1) !important; }
+    .border-2 { border: 2px solid rgba(255, 255, 255, 0.1) !important; }
+    .overflow-hidden { overflow: hidden !important; }
+    .overflow-y-auto { overflow-y: auto !important; }
+    .pointer-events-none { pointer-events: none !important; }
+    .transition-all { transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1) !important; }
+    .duration-300 { transition-duration: 300ms !important; }
+    .scale-100 { transform: scale(1) !important; }
+    .whitespace-nowrap { white-space: nowrap !important; }
+    .opacity-85 { opacity: 0.85 !important; }
+    .opacity-50 { opacity: 0.5 !important; }
+    .opacity-40 { opacity: 0.4 !important; }
+    .italic { font-style: italic !important; }
+    .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important; }
+    .uppercase { text-transform: uppercase !important; }
+    .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .leading-relaxed { line-height: 1.625 !important; }
+    .leading-tight { line-height: 1.25 !important; }
+    .leading-none { line-height: 1 !important; }
+    .tracking-wider { letter-spacing: 0.05em !important; }
+    .tracking-widest { letter-spacing: 0.1em !important; }
+    .tracking-wide { letter-spacing: 0.025em !important; }
+    .list-disc { list-style-type: disc !important; }
+    .pl-4 { padding-left: 1rem !important; }
+    
+    .bg-black { background-color: #000000 !important; }
+    .bg-slate-800 { background-color: #1e293b !important; }
+    .bg-slate-900 { background-color: #0f172a !important; }
+    .bg-slate-900\/80 { background-color: rgba(15, 23, 42, 0.8) !important; }
+    .bg-slate-900\/60 { background-color: rgba(15, 23, 42, 0.6) !important; }
+    .bg-slate-950\/60 { background-color: rgba(2, 6, 23, 0.6) !important; }
+    .bg-cyan-950\/80 { background-color: rgba(8, 47, 73, 0.8) !important; }
+    .bg-cyan-950\/40 { background-color: rgba(8, 47, 73, 0.4) !important; }
+    .bg-yellow-950\/40 { background-color: rgba(113, 63, 18, 0.4) !important; }
+    .bg-blue-950\/30 { background-color: rgba(23, 37, 84, 0.3) !important; }
+    .bg-blue-950\/40 { background-color: rgba(23, 37, 84, 0.4) !important; }
+    .bg-green-950 { background-color: #052e16 !important; }
+    .bg-green-950\/60 { background-color: rgba(20, 83, 45, 0.6) !important; }
+    .bg-cyan-950 { background-color: #083344 !important; }
+    .bg-emerald-950\/60 { background-color: rgba(2, 48, 32, 0.6) !important; }
+    .bg-rose-950\/60 { background-color: rgba(69, 10, 10, 0.6) !important; }
+    .bg-slate-100 { background-color: #f1f5f9 !important; }
+    .bg-white { background-color: #ffffff !important; }
+    .bg-cyan-900 { background-color: #164e63 !important; }
+    
+    .border-green-500 { border-color: #22c55e !important; }
+    .border-cyan-400 { border-color: #22d3ee !important; }
+    .border-cyan-500\/20 { border-color: rgba(6, 182, 212, 0.2) !important; }
+    .border-cyan-500\/40 { border-color: rgba(6, 182, 212, 0.4) !important; }
+    .border-yellow-500\/20 { border-color: rgba(234, 179, 8, 0.2) !important; }
+    .border-yellow-500\/40 { border-color: rgba(234, 179, 8, 0.4) !important; }
+    .border-green-500\/30 { border-color: rgba(34, 197, 94, 0.3) !important; }
+    .border-red-500\/30 { border-color: rgba(239, 68, 68, 0.3) !important; }
+    .border-slate-700\/50 { border-color: rgba(51, 65, 85, 0.5) !important; }
+    .border-slate-700 { border-color: #334155 !important; }
+    .border-slate-800 { border-color: #1e293b !important; }
+    .border-slate-800\/60 { border-color: rgba(30, 41, 59, 0.6) !important; }
+    .border-blue-500\/30 { border-color: rgba(59, 130, 246, 0.3) !important; }
+    .border-emerald-400 { border-color: #34d399 !important; }
+    .border-rose-400 { border-color: #f87171; }
+    .border-emerald-600\/30 { border-color: rgba(5, 150, 105, 0.3) !important; }
+    .border-rose-600\/30 { border-color: rgba(220, 38, 38, 0.3) !important; }
+    .border-cyan-800 { border-color: #155e75 !important; }
+    .border-cyan-900\/20 { border-color: rgba(8, 51, 68, 0.2) !important; }
+    .border-slate-200 { border-color: #e2e8f0 !important; }
+    
+    .text-white { color: #ffffff !important; }
+    .text-cyan-400 { color: #22d3ee !important; }
+    .text-cyan-300 { color: #67e8f9 !important; }
+    .text-cyan-200 { color: #a5f3fc; }
+    .text-yellow-400 { color: #facc15 !important; }
+    .text-yellow-300 { color: #fde047 !important; }
+    .text-slate-200 { color: #e2e8f0 !important; }
+    .text-slate-300 { color: #cbd5e1 !important; }
+    .text-slate-400 { color: #94a3b8 !important; }
+    .text-slate-500 { color: #64748b !important; }
+    .text-red-400 { color: #f87171 !important; }
+    .text-green-300 { color: #86efac !important; }
+    .text-cyan-950 { color: #083344 !important; }
+    .text-slate-900 { color: #0f172a !important; }
+    .text-emerald-700 { color: #047857 !important; }
+    .text-slate-955 { color: #020617 !important; }
+
+    .hidden { display: none !important; }
+
+    /* Responsive Display Utilities */
+    @media (min-width: 768px) {
+      .md\:flex { display: flex !important; }
+      .md\:text-5xl { font-size: 3rem !important; }
+      .md\:text-sm { font-size: 0.875rem !important; }
+      .md\:text-base { font-size: 1rem !important; }
+    }
+
+    /* ==========================================================================
+       3. EFECTS & GLOWING STYLES (GLASSMORPHISM, NEON GLOW)
+       ========================================================================== */
+    .glass-panel {
+      background: rgba(8, 17, 32, 0.15);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+    }
+
+    .glass-panel-heavy {
+      background: rgba(5, 10, 22, 0.45);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(0, 242, 254, 0.35);
+    }
+
+    .text-readable {
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.95), 
+                  -1px -1px 2px rgba(0, 0, 0, 0.95), 
+                   1px -1px 2px rgba(0, 0, 0, 0.95), 
+                  -1px 1px 2px rgba(0, 0, 0, 0.95),
+                   0px 2px 4px rgba(0, 0, 0, 1);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00f2fe, #0061ff);
+      color: #030712;
+      border: none;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+      cursor: pointer;
+      font-weight: 800;
+      transition: all 0.2s ease-in-out;
+    }
+    .btn-primary:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.7);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #eab308, #ca8a04);
+      color: #ffffff !important;
+      border: none;
+      box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
+      cursor: pointer;
+      font-weight: 800;
+      transition: all 0.2s ease-in-out;
+    }
+    .btn-secondary:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 25px rgba(234, 179, 8, 0.7);
+    }
+
+    .btn-dark {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      color: #22d3ee;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-dark:hover {
+      background: rgba(6, 182, 212, 0.2);
+      border-color: #22d3ee;
+    }
+
+    /* Opsi Tombol Kuis Khusus */
+    .option-btn {
+      background-color: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: #ffffff !important;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+    .option-btn:hover {
+      background-color: rgba(6, 182, 212, 0.2);
+      border-color: #22d3ee;
+    }
+
+    .space-y-4 > * + * { margin-top: 1rem !important; }
+    .space-y-3 > * + * { margin-top: 0.75rem !important; }
+    .space-y-2 > * + * { margin-top: 0.5rem !important; }
+    .space-y-1\.5 > * + * { margin-top: 0.375rem !important; }
+    .space-y-1 > * + * { margin-top: 0.25rem !important; }
+    .space-y-0\.5 > * + * { margin-top: 0.125rem !important; }
+
+    /* Button Hovers */
+    .hover\:scale-110:hover { transform: scale(1.10) !important; }
+    .hover\:border-cyan-400:hover { border-color: #22d3ee !important; }
+    .hover\:border-yellow-400:hover { border-color: #facc15 !important; }
+    .hover\:border-blue-400:hover { border-color: #60a5fa !important; }
+    .hover\:bg-cyan-500\/20:hover { background-color: rgba(6, 182, 212, 0.2) !important; }
+    .hover\:bg-yellow-500\/20:hover { background-color: rgba(234, 179, 8, 0.2) !important; }
+    .hover\:bg-red-500\/20:hover { background-color: rgba(239, 68, 68, 0.2) !important; }
+    .hover\:bg-slate-700:hover { background-color: #334155 !important; }
+    .hover\:bg-slate-800:hover { background-color: #1e293b !important; }
+    .hover\:bg-cyan-850:hover { background-color: #155e75 !important; }
+    .hover\:bg-cyan-950:hover { background-color: rgba(8, 47, 73, 0.9) !important; }
+    
+    /* Disabled State */
+    button:disabled, .disabled\:opacity-40:disabled {
+      opacity: 0.4 !important;
+      cursor: not-allowed !important;
+      pointer-events: none !important;
+    }
+
+    /* Kustomisasi Input Tanpa Ikon yang Menghalangi */
+    input.clean-input {
+      padding: 0.5rem 0.75rem !important;
+    }
+  </style>
+</head>
+<body class="h-screen w-screen flex items-center justify-center">
+
+  <!-- BACKGROUND MUSIC & FALLBACKS (Opasitas Latar Belakang Luar Angkasa Ditingkatkan Menjadi 85% & Menggunakan .jpeg) -->
+  <div class="absolute inset-0 z-0 opacity-85 pointer-events-none bg-cover bg-center" style="background-image: url('assets/space_bg.jpeg'), radial-gradient(circle, #0e1e38 20%, #030712 100%);"></div>
+  
+  <!-- PARTIKEL KEMBANG API CANVAS -->
+  <canvas id="particleCanvas" class="absolute inset-0 z-10 pointer-events-none w-full h-full"></canvas>
+
+  <!-- BINGKAI CONTAINER UTAMA (16:9 FIXED) -->
+  <div id="gameWindow" class="game-container relative z-20 overflow-hidden glass-panel p-4 rounded-xl shadow-2xl scale-100 transition-all duration-300">
+    
+    <!-- ==================== HEADER (HUD - PERSISTEN SETELAH DAFTAR) ==================== -->
+    <header id="gameHUD" class="hidden w-full flex items-center justify-between pb-2 z-30" style="border-b: 1px solid rgba(0, 242, 254, 0.2);">
+      <div class="flex items-center gap-3">
+        <div class="relative w-10 h-10 rounded-full border overflow-hidden bg-slate-800" style="border-color: #22d3ee; width: 40px; height: 40px;">
+          <img src="assets/avatar.png" alt="Avatar" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect width=%2240%22 height=%2240%22 fill=%22%230f172a%22/><circle cx=%2220%22 cy=%2216%22 r=%228%22 fill=%22%2322d3ee%22/><rect x=%228%22 y=%2226%22 width=%2224%22 height=%2214%22 rx=%227%22 fill=%22%2322d3ee%22/></svg>'" class="w-full h-full object-cover" style="width: 100%; height: 100%;">
+        </div>
+        <div>
+          <div class="text-xs font-semibold tracking-wider text-readable">AGEN NUMERASI</div>
+          <div id="hudUser" class="text-sm font-bold text-white font-orbitron truncate text-readable" style="max-width: 150px;">Agen X</div>
+        </div>
+        <div class="ml-2 px-2 py-0.5 rounded text-xs text-readable" style="background: rgba(8, 47, 73, 0.8); border: 1px solid rgba(6, 182, 212, 0.3);">
+          Kelas: <span id="hudKelas" class="font-bold" style="color: #67e8f9;">-</span>
+        </div>
+      </div>
+
+      <!-- Detail Misi Hack Aktif -->
+      <div class="hidden md:flex flex-col items-center">
+        <span class="text-xs text-slate-400 tracking-widest text-readable">MISI SEKARANG</span>
+        <span id="hudMisi" class="text-xs font-semibold font-orbitron tracking-wide text-readable" style="color: #facc15;">Peta Navigasi Galaksi</span>
+      </div>
+
+      <!-- Skor Bintang & Tombol Kontrol -->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 px-3 py-1 rounded-full" style="background: rgba(113, 63, 18, 0.4); border: 1px solid rgba(234, 179, 8, 0.3);">
+          <span style="color: #facc15; font-size: 1rem;">⭐</span>
+          <span id="hudStars" class="text-sm font-bold font-orbitron text-readable" style="color: #fde047;">0</span>
+        </div>
+
+        <!-- Tombol Audio Toggle -->
+        <button id="audioBtn" onclick="toggleAudio()" class="w-8 h-8 rounded-lg glass-panel text-cyan-400 flex items-center justify-center transition-all" title="Musik Latar" style="border-radius: 0.5rem; width: 32px; height: 32px;">
+          <span id="audioIcon">🔇</span>
+        </button>
+
+        <!-- Tombol Info Kurikulum -->
+        <button onclick="openInfoModal()" class="w-8 h-8 rounded-lg glass-panel text-cyan-400 flex items-center justify-center transition-all" title="Informasi Kurikulum" style="border-radius: 0.5rem; width: 32px; height: 32px;">
+          <span>ℹ️</span>
+        </button>
+
+        <!-- Tombol Profil Pengembang -->
+        <button onclick="openDevModal()" class="w-8 h-8 rounded-lg glass-panel text-cyan-400 flex items-center justify-center transition-all" title="Pengembang" style="border-radius: 0.5rem; width: 32px; height: 32px;">
+          <span style="color: #fde047;">👑</span>
+        </button>
+
+        <!-- Tombol Keluar -->
+        <button onclick="triggerExitConfirm()" class="w-8 h-8 rounded-lg flex items-center justify-center transition-all" title="Keluar" style="border-radius: 0.5rem; width: 32px; height: 32px; background: rgba(127, 29, 29, 0.4); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171;">
+          <span>🚪</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ==================== AREA LAYAR AKTIF (SCREEN VIEWS) ==================== -->
+    <main id="gameScreen" class="flex-1 w-full relative flex items-center justify-center overflow-hidden my-1" style="height: 100%;">
+      
+      <!-- LAYAR 1: MENU UTAMA -->
+      <div id="screenMainMenu" class="w-full h-full flex flex-col items-center justify-center gap-4 text-center z-20">
+        <div class="animate-float flex flex-col items-center">
+          <!-- Ilustrasi Planet Melayang SVG -->
+          <svg class="w-24 h-24 md:w-32 md:h-32 mb-1 filter drop-shadow-[0_0_20px_rgba(0,242,254,0.6)]" style="width: 100px; height: 100px;" viewBox="0 0 100 100">
+            <defs>
+              <radialGradient id="gradPlanet" cx="40%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#00f2fe" />
+                <stop offset="70%" stop-color="#0061ff" />
+                <stop offset="100%" stop-color="#0a1528" />
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="50" r="30" fill="url(#gradPlanet)" />
+            <path d="M15,55 Q50,75 85,55" fill="none" stroke="#eab308" stroke-width="4" stroke-linecap="round" opacity="0.8" />
+            <path d="M22,48 Q50,68 78,48" fill="none" stroke="#eab308" stroke-width="2" stroke-linecap="round" opacity="0.5" />
+            <circle cx="40" cy="40" r="3" fill="#ffffff" opacity="0.6" />
+            <circle cx="62" cy="45" r="4" fill="#ffffff" opacity="0.4" />
+          </svg>
+          <h1 class="text-3xl md:text-5xl font-extrabold tracking-wider font-orbitron text-white uppercase text-readable" style="margin: 10px 0 5px 0;">
+            GAME EDUKASI
+          </h1>
+          <p class="text-sm md:text-lg tracking-widest text-cyan-300 font-semibold uppercase text-readable" style="margin: 0 0 15px 0; color: #22d3ee;">
+            Peluang Kejadian Saling Lepas & Saling Bebas
+          </p>
+        </div>
+
+         <button id="mainStartBtn" onclick="transitionToRegister()" class="btn-primary font-orbitron px-8 py-3 rounded-lg shadow-none" style="padding: 12px 32px; border-radius: 0.5rem; font-size: 1.125rem; box-shadow: none !important;">
+          MULAI MISI 🚀
+        </button>
+        </button>
+      </div>
+
+      <!-- LAYAR 2: REGISTRASI IDENTITAS (Menghapus Ikon 👤 dan 🎓 yang Menghalangi) -->
+      <div id="screenRegister" class="hidden w-full h-full flex flex-col items-center justify-center gap-4 z-20">
+        <div class="glass-panel-heavy p-6 rounded-xl border text-left" style="width: 100%; max-width: 400px; padding: 1.5rem; border-color: rgba(6, 182, 212, 0.4);">
+          <div class="flex items-center gap-3 mb-4 pb-3" style="border-b: 1px solid rgba(6, 182, 212, 0.2); width: 100%;">
+            <span style="font-size: 1.5rem;">👨‍🚀</span>
+            <h2 class="text-lg font-bold font-orbitron tracking-wider text-white text-readable" style="margin: 0;">REGISTRASI AGEN</h2>
+          </div>
+          
+          <div class="flex flex-col gap-4 text-xs md:text-sm">
+            <div>
+              <label class="block text-cyan-300 font-semibold mb-1 text-readable" style="color: #22d3ee; margin-bottom: 6px; display: block;">Nama Lengkap Agen</label>
+              <div class="relative">
+                <input id="inputName" type="text" class="clean-input" placeholder="Masukkan nama panggilan/lengkap...">
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-cyan-300 font-semibold mb-1 text-readable" style="color: #22d3ee; margin-bottom: 6px; display: block;">Kelas / Skuadron</label>
+              <div class="relative">
+                <input id="inputClass" type="text" class="clean-input" placeholder="Contoh: XII-A">
+              </div>
+            </div>
+
+            <div class="bg-blue-950/30 border border-blue-500/20 p-2.5 rounded text-[11px] text-slate-300 leading-tight flex gap-2 text-readable" style="background: rgba(30, 58, 138, 0.3); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 0.25rem;">
+              <span>🛡️ Kredensial ini akan disimpan secara lokal untuk dicetak pada <strong>Sertifikat Agen Terbaik</strong> di akhir misi.</span>
+            </div>
+            
+            <button onclick="registerAgent()" class="btn-secondary font-orbitron w-full py-2.5 rounded text-sm tracking-wider" style="padding: 10px; border-radius: 0.25rem; font-size: 0.875rem; width: 100%;">
+              DAFTARKAN & MULAI 🛸
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAYAR 3: PETA PETUALANGAN UTAMA -->
+      <div id="screenAdventureMap" class="hidden w-full h-full relative z-20 flex flex-col">
+        <!-- SVG Canvas untuk Menggambar Jalur Penghubung Peta -->
+        <svg id="mapConnectionSVG" class="absolute inset-0 w-full h-full pointer-events-none z-10" style="width: 100%; height: 100%;"></svg>
+
+        <!-- CONTAINER NODE PLANET PETA -->
+        <div id="mapNodesContainer" class="absolute inset-0 z-20" style="width: 100%; height: 100%;">
+          <!-- Node-node planet akan dipasang dinamis di sini -->
+        </div>
+
+        <!-- Token Karakter Agen -->
+        <div id="agentToken" class="absolute z-30 token-transition pointer-events-none flex flex-col items-center justify-center w-8 h-8 bg-yellow-400 text-slate-955 rounded-full font-bold text-sm" style="display: none; width: 32px; height: 32px; background: #eab308; color: #030712; border-radius: 50%; box-shadow: 0 0 10px #eab308;">
+          <span>👤</span>
+        </div>
+
+        <!-- Keterangan Legend Peta (Pojok Kiri Bawah) -->
+        <div class="absolute bottom-2 right-2 px-3 py-1.5 rounded text-xs tracking-wider text-slate-400 pointer-events-none flex gap-3 z-30" style="background: rgba(3, 7, 18, 0.8); border: 1px solid rgba(6, 182, 212, 0.2);">
+          <div class="flex items-center gap-1" style="display: flex; align-items: center;"><span class="rounded-full" style="width: 8px; height: 8px; background: #22d3ee; border-radius: 50%; display: inline-block; margin-right: 4px;"></span> Aktif</div>
+          <div class="flex items-center gap-1" style="display: flex; align-items: center;"><span class="rounded-full" style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; margin-right: 4px;"></span> Selesai</div>
+          <div class="flex items-center gap-1" style="display: flex; align-items: center;"><span class="rounded-full" style="width: 8px; height: 8px; background: #475569; border-radius: 50%; display: inline-block; margin-right: 4px;"></span> Terkunci</div>
+        </div>
+      </div>
+
+      <!-- TEMPLATE SCREEN STAGE INTERAKTIF -->
+      <div id="screenStageFrame" class="hidden w-full h-full flex flex-col p-4 bg-slate-950/60 rounded-lg relative z-20" style="border: 1px solid rgba(6, 182, 212, 0.2); background: rgba(2, 6, 23, 0.6); box-sizing: border-box; width: 100%;">
+        <!-- Judul & Deskripsi Level Hack Aktif -->
+        <div class="flex items-center justify-between mb-2 pb-1.5" style="border-b: 1px solid rgba(51, 65, 85, 0.5); width: 100%;">
+          <div class="flex items-center gap-2" style="display: flex; align-items: center;">
+            <span id="stageBadge" class="px-2 py-0.5 text-readable font-bold font-orbitron rounded text-xs" style="background: #0c4a6e; border: 1px solid rgba(14, 165, 233, 0.3); color: #bae6fd;">STAGE 1</span>
+            <h3 id="stageTitle" class="font-extrabold text-white font-orbitron tracking-wide text-readable text-xs md:text-sm" style="margin: 0;">JUDUL STAGE</h3>
+          </div>
+          <button onclick="backToMap()" class="btn-dark px-3 py-1 rounded text-xs text-readable" style="border-radius: 0.25rem; font-size: 0.75rem;">
+            🔙 Kembali ke Peta
+          </button>
+        </div>
+
+        <!-- AREA KONTEN UTAMA STAGE (KONTEN DINAMIS & DAPAT DI-SCROLL AGAR TIDAK TERPOTONG) -->
+        <div id="stageContentArea" class="flex-1 w-full overflow-y-auto custom-scroll flex flex-col justify-start my-1 pr-1">
+          <!-- Akan diisi secara dinamis tergantung tipe stage yang dimuat -->
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer id="gameFooter" class="hidden w-full flex items-center justify-between pt-1 text-xs text-slate-500 z-30 pointer-events-none" style="border-t: 1px solid rgba(6, 182, 212, 0.1); width: 100%;">
+      <div class="text-readable">
+        &copy; 2026 Game Edu Peluang Kejadian Saling Bebas dan Saling Lepas
+      </div>
+      <div class="text-readable">
+        Game edu ini dibuat dengan bantuan Gemini AI
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ==================== MODAL FEEDBACK POPUP KUSTOM ==================== -->
+  <div id="feedbackModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" style="backdrop-filter: blur(4px);">
+    <div class="glass-panel-heavy p-6 rounded-xl border-2 w-full max-w-sm text-center transform scale-100 transition-all duration-300" id="feedbackBorder" style="max-width: 320px; padding: 1.5rem;">
+      <div id="feedbackIconContainer" style="font-size: 3rem; margin-bottom: 0.75rem;">
+        ✅
+      </div>
+      <h3 id="feedbackTitle" class="text-lg font-bold font-orbitron tracking-wider text-white mb-2 text-readable" style="margin-top: 0;">JAWABAN BENAR!</h3>
+      <p id="feedbackDesc" class="text-xs md:text-sm text-slate-300 leading-relaxed mb-4 text-readable">Analisis logika penjelasan dari penugasan numerasi.</p>
+      
+      <!-- Pemberian Bintang -->
+      <div id="feedbackStarsReward" class="hidden items-center justify-center gap-1 mb-4 text-yellow-400 font-orbitron text-sm text-readable">
+        <span>⭐ +10 Bintang Ditambahkan!</span>
+      </div>
+
+      <!-- Tombol Aksi Feedback Kustom -->
+      <div class="flex flex-col items-center justify-center w-full" style="gap: 8px;">
+        <button id="feedbackActionBtn" onclick="closeFeedbackModal()" class="btn-primary font-orbitron px-4 py-2 rounded transition-all w-full">
+          KEMBALI KE PETA <span style="margin-left: 4px;">🗺️</span>
+        </button>
+        <button id="feedbackActionBtn2" onclick="closeFeedbackModal2()" class="hidden btn-secondary font-orbitron px-4 py-2 rounded transition-all w-full">
+          TOMBOL KEDUA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL INFORMASI KURIKULUM (i) ==================== -->
+  <div id="infoModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" style="backdrop-filter: blur(4px);">
+    <div class="glass-panel-heavy p-6 rounded-xl border w-full max-w-lg text-left max-h-[85vh] overflow-y-auto custom-scroll" style="max-width: 480px; padding: 1.5rem; border-color: rgba(6, 182, 212, 0.4);">
+      <div class="flex items-center justify-between pb-3 mb-4" style="border-b: 1px solid rgba(6, 182, 212, 0.2); width: 100%;">
+        <div class="flex items-center gap-2" style="display: flex; align-items: center;">
+          <span style="font-size: 1.25rem;">ℹ️</span>
+          <h3 class="text-base font-bold font-orbitron text-white tracking-wider text-readable" style="margin: 0;">KURIKULUM & MATERI AJAR</h3>
+        </div>
+        <button onclick="closeInfoModal()" class="btn-dark" style="background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer;">✕</button>
+      </div>
+      
+      <div class="space-y-4 text-xs md:text-sm text-slate-300 leading-relaxed text-readable">
+        <div>
+          <h4 class="text-cyan-300 font-bold font-orbitron mb-1 text-readable" style="color: #22d3ee; margin: 0 0 4px 0;">STRUKTUR KURIKULUM</h4>
+          <p style="margin: 0 0 4px 0;"><strong>Jenjang / Kelas:</strong> SMA / MA - Fase F</p>
+          <p><strong>Elemen:</strong> Analisis Data dan Peluang</p>
+          <p><strong>Sub Unit:</strong> Peluang Kejadian Majemuk (Saling Lepas, Saling Bebas, Saling Tidak Lepas, dan Kejadian Bersyarat)</p>
+        </div>
+
+        <div>
+          <h4 class="text-cyan-300 font-bold font-orbitron mb-1 text-readable">TUJUAN PEMBELAJARAN</h4>
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Menjelaskan konsep peluang kejadian saling lepas dan saling tidak lepas secara intuitif maupun matematis.</li>
+            <li>Memahami perbedaan fundamental antara peluang kejadian saling bebas dengan kejadian bersyarat.</li>
+            <li>Mengaplikasikan penyelesaian aturan penjumlahan dan aturan perkalian dalam memecahkan masalah numerasi sehari-hari.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL PROFIL PENGEMBANG (CROWN) ==================== -->
+  <div id="devModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" style="backdrop-filter: blur(4px);">
+    <div class="glass-panel-heavy p-6 rounded-xl border w-full max-w-md text-center" style="max-width: 360px; padding: 1.5rem; border-color: rgba(234, 179, 8, 0.4);">
+      <div class="flex justify-end" style="width: 100%; display: flex; justify-content: flex-end;">
+        <button onclick="closeDevModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.25rem; cursor: pointer;">✕</button>
+      </div>
+
+      <div class="flex flex-col items-center gap-3 text-readable">
+        <div class="relative w-24 h-24 rounded-full border-2 overflow-hidden bg-slate-800 p-1" style="width: 96px; height: 96px; border-radius: 50%; border-color: #eab308; margin: 0 auto;">
+          <img src="assets/ari_profile.png" alt="Ari Kusriani Iman, S.Pd" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect width=%2240%22 height=%2240%22 fill=%22%230f172a%22/><circle cx=%2220%22 cy=%2216%22 r=%228%22 fill=%22%23eab308%22/><rect x=%228%22 y=%2226%22 width=%2224%22 height=%2214%22 rx=%227%22 fill=%22%23eab308%22/></svg>'" class="w-full h-full rounded-full object-cover" style="width:100%; height:100%; border-radius:50%;">
+        </div>
+        
+        <div style="margin-top: 10px;">
+          <h3 class="text-lg font-bold font-orbitron text-yellow-400 tracking-wider" style="margin: 0; color: #facc15;">Ari Kusriani Iman, S.Pd</h3>
+          <p class="text-xs text-slate-300 font-semibold tracking-widest uppercase" style="margin: 2px 0 0 0; color: #cbd5e1;">Guru Matematika</p>
+          <p class="text-xs font-bold font-orbitron" style="margin: 2px 0 0 0; color: #22d3ee;">SMAN 1 Ngamprah</p>
+        </div>
+
+        <div class="border-t w-full pt-3 mt-1 text-xs text-slate-300 space-y-2 leading-relaxed text-readable" style="border-top: 1px solid rgba(148, 163, 184, 0.2); margin-top: 12px; padding-top: 12px;">
+          <p style="margin: 0;">
+            "Teruslah bereksplorasi dan mengasah kemampuan numerasi berpikir kritis. Matematika bukanlah tentang rumus semata, melainkan tentang petualangan logika yang membawa harmoni pada semesta."
+          </p>
+          <div class="inline-block px-3 py-1 rounded-full text-xs" style="background: rgba(113, 63, 18, 0.4); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 9999px; display: inline-block; margin-top: 10px; color: #fde047; padding: 2px 12px;">
+            🏆 Kreator Media Pembelajaran Interaktif
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL KONFIRMASI KELUAR ==================== -->
+  <div id="exitConfirmModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" style="backdrop-filter: blur(4px);">
+    <div class="glass-panel-heavy p-6 rounded-xl border w-full max-w-sm text-center" style="max-width: 320px; padding: 1.5rem; border-color: rgba(239, 68, 68, 0.4);">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚠️</div>
+      <h3 class="text-base font-bold font-orbitron text-white mb-2 text-readable" style="margin: 0 0 8px 0;">BATALKAN PENYELAMATAN?</h3>
+      <p class="text-xs text-slate-300 leading-relaxed mb-4 text-readable" style="margin: 0 0 16px 0;">
+        Jika Anda keluar sekarang, progres petualangan aktif Agen saat ini akan tereset kembali ke awal peta. Apakah Anda yakin?
+      </p>
+      <div class="flex items-center gap-3 justify-center" style="display: flex; justify-content: center; gap: 0.75rem;">
+        <button onclick="exitGameConfirmed()" class="btn-primary" style="background: #ef4444; color: #ffffff; box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); padding: 8px 16px; border-radius: 0.25rem; font-size: 0.75rem;">
+          YA, RESET PROGRESS
+        </button>
+        <button onclick="closeExitConfirm()" class="btn-dark" style="padding: 8px 16px; border-radius: 0.25rem; font-size: 0.75rem; color: #cbd5e1; border-color: #475569;">
+          BATAL
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== KODE JAVASCRIPT LOGIKA UTAMA ==================== -->
+  <script>
+    // --- 1. STATE MANAGEMENT GAME ---
+    const gameState = {
+      appId: typeof __app_id !== 'undefined' ? __app_id : 'misi-penyelamatan-planet',
+      user: {
+        nama: 'Agen X',
+        kelas: '-'
+      },
+      stars: 0,
+      activeMisi: 'Inisialisasi Sistem...',
+      audioContext: null,
+      bgMusic: null,
+      isMusicPlaying: false,
+      completedStages: [], // menyimpan ID stage yang sudah sukses diselesaikan
+      currentStageId: null,
+      unlockedBranches: false, // penanda apakah Stage 3 sudah lulus sehingga cabang terbuka
+      jembatanStep: 1, // Menyimpan step aktif untuk Kuis Jembatan 2-Tahap
+      // Detail database stage-stage petualangan
+      stages: {
+        's1': { id: 's1', name: 'Pendahuluan', type: 'teori_pendahuluan', locked: false, x: 10, y: 50 },
+        's2': { id: 's2', name: 'Materi Awal', type: 'teori_materi_awal', locked: true, x: 25, y: 50 },
+        's3': { id: 's3', name: 'Kuis Jembatan', type: 'kuis_jembatan', locked: true, x: 40, y: 50 },
+        
+        // Cabang A (Saling Lepas & Saling Tidak Lepas)
+        's4a': { id: 's4a', name: 'Materi Saling Lepas', type: 'teori_4a', locked: true, x: 55, y: 25 },
+        's5a': { id: 's5a', name: 'Roda Saling Lepas', type: 'roda_5a', locked: true, x: 70, y: 25 },
+        's6a': { id: 's6a', name: 'Analisis Soal Lepas', type: 'teori_6a', locked: true, x: 85, y: 25 },
+        's7a': { id: 's7a', name: 'Menjodohkan Saling Lepas', type: 'match_7a', locked: true, x: 100, y: 25 },
+
+        // Cabang B (Saling Bebas & Bersyarat)
+        's4b': { id: 's4b', name: 'Materi Saling Bebas', type: 'teori_4b', locked: true, x: 55, y: 75 },
+        's5b': { id: 's5b', name: 'Roda Saling Bebas', type: 'roda_5b', locked: true, x: 70, y: 75 },
+        's6b': { id: 's6b', name: 'Analisis Soal Bebas', type: 'teori_6b', locked: true, x: 85, y: 75 },
+        's7b': { id: 's7b', name: 'Menjodohkan Saling Bebas', type: 'match_7b', locked: true, x: 100, y: 75 },
+
+        // Uji Kompetensi Gabungan & Epilog
+        'uji': { id: 'uji', name: 'Uji Kompetensi', type: 'uji_kompetensi', locked: true, x: 115, y: 50 },
+        'epilog': { id: 'epilog', name: 'Misi Sukses!', type: 'epilog_selesai', locked: true, x: 130, y: 50 }
+      }
+    };
+
+    // --- DEKLARASI GLOBAL UNTUK UJI KOMPETENSI ---
+    let currentUjiIndex = 0;
+    let ujiAnswers = Array(10).fill(null);
+    let scoreUji = 0;
+
+    // --- DEKLARASI DATABASE MINI GAME RODA PUTAR (RESOLVED BUG: dbSpinA & dbSpinB didefinisikan kembali) ---
+    let currentSpinAData = null;
+    let currentSpinBData = null;
+
+    const dbSpinA = [
+      { kasus: "Memilih kartu Bridge secara acak mendapatkan Kartu As atau Kartu Hati.", jawaban: "tidak_saling_lepas", penjelas: "Kartu As Hati memiliki irisan karena ada kartu As yang juga merupakan kartu Hati. Maka ada irisan sehingga tidak saling lepas." },
+      { kasus: "Melempar dua buah dadu bersamaan mendapatkan jumlah mata dadu 3 atau jumlah 11.", jawaban: "saling_lepas", penjelas: "Jumlah mata dadu 3 dan jumlah dadu 11 tidak memiliki irisan anggota dadu bersamaan." },
+      { kasus: "Mengambil sebuah nomor acak dari kantong berisi nomor 1 sampai 10 dan terpilih bilangan genap atau bilangan prima.", jawaban: "tidak_saling_lepas", penjelas: "Angka 2 merupakan bilangan genap yang juga sekaligus bilangan prima, sehingga ada irisan." },
+      { kasus: "Mengambil satu kelereng dari toples yang berisi kelereng merah dan kelereng biru, terpilih kelereng merah atau kelereng biru.", jawaban: "saling_lepas", penjelas: "Kelereng tidak bisa berwarna merah dan biru sekaligus dalam satu pengambilan tunggal, tidak ada irisan." },
+      { kasus: "Mengambil satu bola dari kotak berisi bola merah bernomor 1-5 and bola biru bernomor 6-10, terpilih bola berwarna merah atau bola bernomor genap.", jawaban: "tidak_saling_lepas", penjelas: "Bola merah bernomor 2 and 4 adalah bilangan genap, sehingga terdapat irisan kejadian (merah dan genap)." }
+    ];
+
+    const dbSpinB = [
+      { kasus: "Melempar dadu lalu memutar spinner warna bersamaan secara terpisah.", jawaban: "saling_bebas", penjelas: "Kedua aksi dilakukan terpisah dan tidak ada pengaruh satu sama lain, sehingga saling bebas." },
+      { kasus: "Mengambil dua kelereng merah berturut-turut dari toples TANPA dikembalikan lagi kelereng pertama.", jawaban: "bersyarat", penjelas: "Karena tidak dikembalikan, jumlah kelereng merah and total ruang sampel berkurang untuk pengambilan kedua (Bersyarat)." },
+      { kasus: "Melempar dua koin logam serentak, koin pertama bersisi Angka dan koin kedua bersisi Gambar.", jawaban: "saling_bebas", penjelas: "Hasil pelemparan koin pertama sama sekali tidak memengaruhi hasil pelemparan koin kedua." },
+      { kasus: "Mengambil dua kartu bridge berurutan, setelah kartu pertama diambil langsung dimasukkan kembali sebelum kartu kedua diambil.", jawaban: "saling_bebas", penjelas: "Pengembalian kartu menjamin ruang sampel kembali utuh, maka kejadian ini adalah saling bebas." },
+      { kasus: "Mengambil dua kartu berturut-turut dari tumpukan kartu bernomor 1-10 secara acak TANPA pengembalian.", jawaban: "bersyarat", penjelas: "Keadaan pertama (kartu terambil) tidak dikembalikan, sehingga mengubah proporsi dan jumlah sisa kartu untuk pengambilan kedua (Bersyarat)." },
+      { kasus: "Memilih dua siswa secara acak satu per satu dari kelas untuk menjadi ketua dan wakil ketua kelas.", jawaban: "bersyarat", penjelas: "Siswa yang sudah terpilih menjadi ketua tidak dapat dipilih kembali menjadi wakil ketua, sehingga pilihan kedua dipengaruhi pilihan pertama." }
+    ];
+
+    // --- 2. SYNTHESIZER AUDIO MANDIRI (WEB AUDIO API) ---
+    function playSynthSound(type) {
+      try {
+        if (!gameState.audioContext) {
+          gameState.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        
+        const ctx = gameState.audioContext;
+        if (ctx.state === 'suspended') {
+          ctx.resume();
+        }
+        
+        const now = ctx.currentTime;
+        
+        switch(type) {
+          case 'click': {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, now);
+            osc.frequency.exponentialRampToValueAtTime(150, now + 0.1);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.1);
+            break;
+          }
+          case 'correct': {
+            const osc1 = ctx.createOscillator();
+            const osc2 = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc1.type = 'triangle';
+            osc2.type = 'sine';
+            
+            osc1.frequency.setValueAtTime(523.25, now); // C5
+            osc1.frequency.setValueAtTime(659.25, now + 0.1); // E5
+            osc1.frequency.setValueAtTime(783.99, now + 0.2); // G5
+            
+            osc2.frequency.setValueAtTime(1046.50, now + 0.2); // C6
+            
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+            
+            osc1.connect(gain);
+            osc2.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc1.start(now);
+            osc2.start(now + 0.1);
+            osc1.stop(now + 0.4);
+            osc2.stop(now + 0.4);
+            break;
+          }
+          case 'wrong': {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, now);
+            osc.frequency.linearRampToValueAtTime(80, now + 0.45);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.45);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.45);
+            break;
+          }
+          case 'spin': {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(200, now);
+            osc.frequency.linearRampToValueAtTime(1200, now + 1.2);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 1.2);
+            break;
+          }
+          case 'success_level': {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(261.63, now); // C4
+            osc.frequency.setValueAtTime(329.63, now + 0.15); // E4
+            osc.frequency.setValueAtTime(392.00, now + 0.3); // G4
+            osc.frequency.setValueAtTime(523.25, now + 0.45); // C5
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.8);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.8);
+            break;
+          }
+        }
+      } catch(e) {
+        console.warn("Web Audio API diblokir atau tidak didukung oleh browser saat ini:", e);
+      }
+    }
+
+    // --- 3. KONTROL AUDIO BACKROUND ---
+    function setupBgMusic() {
+      try {
+        if (!gameState.bgMusic) {
+          gameState.bgMusic = new Audio();
+          gameState.bgMusic.src = 'assets/music.mp3';
+          gameState.bgMusic.loop = true;
+          gameState.bgMusic.volume = 0.45;
+          
+          gameState.bgMusic.onerror = function() {
+            console.warn("Latar musik assets/music.mp3 tidak ditemukan, menggunakan synthesizer alternatif.");
+          };
+        }
+      } catch(e) {
+        console.warn("Gagal inisialisasi background music:", e);
+      }
+    }
+
+    function toggleAudio() {
+      playSynthSound('click');
+      setupBgMusic();
+      const icon = document.getElementById('audioIcon');
+      
+      if (gameState.isMusicPlaying) {
+        if (gameState.bgMusic) gameState.bgMusic.pause();
+        gameState.isMusicPlaying = false;
+        icon.textContent = '🔇';
+      } else {
+        if (gameState.bgMusic) {
+          gameState.bgMusic.play().then(() => {
+            gameState.isMusicPlaying = true;
+            icon.textContent = '🔊';
+          }).catch((err) => {
+            console.log("Audio terblokir sistem peramban. Harus klik pemicu interaksi terlebih dahulu.", err);
+          });
+        }
+      }
+    }
+
+    // --- 4. ALUR LAYAR & NAVIGASI UTAMA ---
+    function transitionToRegister() {
+      playSynthSound('click');
+      if (!gameState.audioContext) {
+        try {
+          gameState.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch(e) {}
+      }
+      
+      document.getElementById('screenMainMenu').classList.add('hidden');
+      document.getElementById('screenRegister').classList.remove('hidden');
+    }
+
+    function registerAgent() {
+      const nama = document.getElementById('inputName').value.trim();
+      const kelas = document.getElementById('inputClass').value.trim();
+
+      if (!nama || !kelas) {
+        playSynthSound('wrong');
+        showModalFeedback(false, "IDENTITAS TIDAK LENGKAP", "Harap masukkan Nama Lengkap Anda dan Kelas untuk memulai Misi Agen Numerasi.");
+        return;
+      }
+
+      playSynthSound('correct');
+      gameState.user.nama = nama;
+      gameState.user.kelas = kelas;
+
+      // Update HUD
+      document.getElementById('hudUser').textContent = nama;
+      document.getElementById('hudKelas').textContent = kelas;
+      document.getElementById('hudStars').textContent = gameState.stars;
+
+      // Tampilkan HUD & Footer
+      document.getElementById('gameHUD').classList.remove('hidden');
+      document.getElementById('gameFooter').classList.remove('hidden');
+
+      // Masuk ke Peta
+      document.getElementById('screenRegister').classList.add('hidden');
+      document.getElementById('screenAdventureMap').classList.remove('hidden');
+      
+      setupBgMusic();
+      if (gameState.bgMusic) {
+        gameState.bgMusic.play().then(() => {
+          gameState.isMusicPlaying = true;
+          document.getElementById('audioIcon').textContent = '🔊';
+        }).catch(e => console.log("Gagal memutar otomatis latar musik: ", e));
+      }
+
+      buildAdventureMap();
+    }
+
+    // --- 5. VISUALISASI JALUR PETA PETUALANGAN (SVG & HTML NODES) ---
+    function buildAdventureMap() {
+      gameState.activeMisi = "Navigasi Peta Galaksi";
+      document.getElementById('hudMisi').textContent = gameState.activeMisi;
+      
+      const mapContainer = document.getElementById('mapNodesContainer');
+      const svgConn = document.getElementById('mapConnectionSVG');
+      
+      mapContainer.innerHTML = "";
+      svgConn.innerHTML = "";
+
+      document.getElementById('screenStageFrame').classList.add('hidden');
+      document.getElementById('screenAdventureMap').classList.remove('hidden');
+
+      const width = mapContainer.clientWidth || 800;
+      const height = mapContainer.clientHeight || 450;
+
+      drawMapConnections(svgConn, width, height);
+
+      Object.keys(gameState.stages).forEach(key => {
+        const stage = gameState.stages[key];
+        const pixelX = (stage.x / 140) * width;
+        const pixelY = (stage.y / 100) * height;
+
+        const isCompleted = gameState.completedStages.includes(stage.id);
+        const isActive = !stage.locked && !isCompleted;
+        
+        let colorClass = "bg-slate-800 border-slate-600 text-slate-500";
+        let glowClass = "";
+
+        if (isCompleted) {
+          colorClass = "bg-green-950 border-green-500 text-green-300";
+          glowClass = "shadow-[0_0_10px_rgba(34,197,94,0.5)]";
+        } else if (isActive) {
+          colorClass = "bg-cyan-950 border-cyan-400 text-cyan-200 active-node";
+          glowClass = "neon-glow-cyan";
+        }
+
+        // BUMP SIZE: Memperbesar label planet dari mikro (text-[9px]) ke text-xs md:text-sm agar terbaca jelas di layar laptop
+        const labelText = stage.id === 'uji' ? 'UJI AKHIR' : (stage.id === 'epilog' ? 'EPILOG' : stage.name.replace("Materi ", "").replace("Roda ", ""));
+
+        const node = document.createElement('button');
+        node.id = `node-${stage.id}`;
+        node.className = `absolute z-20 w-12 h-12 md:w-14 md:h-14 rounded-full border-2 flex flex-col items-center justify-center transition-all duration-300 ${colorClass} ${glowClass} hover:scale-110`;
+        node.style.left = `${pixelX - 28}px`;
+        node.style.top = `${pixelY - 28}px`;
+        node.style.borderStyle = 'solid';
+        
+        let iconHtml = `🪐`;
+        if (stage.id === 's3' || stage.id === 's5a' || stage.id === 's5b' || stage.id === 's7a' || stage.id === 's7b') {
+          iconHtml = `🧩`;
+        } else if (stage.id === 'uji') {
+          iconHtml = `📝`;
+        } else if (stage.id === 'epilog') {
+          iconHtml = `🏆`;
+        }
+
+        node.innerHTML = `
+          <span style="font-size: 1.25rem;">${iconHtml}</span>
+          <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs md:text-sm font-bold tracking-wide font-orbitron text-readable">${labelText}</span>
+        `;
+
+        if (!stage.locked) {
+          node.onclick = () => selectPlanetNode(stage);
+        } else {
+          node.onclick = () => {
+            playSynthSound('wrong');
+            showModalFeedback(false, "PLANET TERKUNCI", "Pecahkan tantangan sandi pada planet-planet sebelumnya untuk mendekripsi koordinat planet ini.");
+          };
+        }
+
+        mapContainer.appendChild(node);
+      });
+
+      updateTokenPosition(width, height);
+    }
+
+    function drawMapConnections(svg, width, height) {
+      const connectionPairs = [
+        ['s1', 's2'], ['s2', 's3'],
+        ['s3', 's4a'], ['s3', 's4b'],
+        ['s4a', 's5a'], ['s5a', 's6a'], ['s6a', 's7a'], ['s7a', 'uji'],
+        ['s4b', 's5b'], ['s5b', 's6b'], ['s6b', 's7b'], ['s7b', 'uji'],
+        ['uji', 'epilog']
+      ];
+
+      connectionPairs.forEach(pair => {
+        const fromStage = gameState.stages[pair[0]];
+        const toStage = gameState.stages[pair[1]];
+
+        const fx = (fromStage.x / 140) * width;
+        const fy = (fromStage.y / 100) * height;
+        const tx = (toStage.x / 140) * width;
+        const ty = (toStage.y / 100) * height;
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        
+        let d = `M ${fx} ${fy} L ${tx} ${ty}`;
+        if (fromStage.id === 's3') {
+          const controlX = fx + (tx - fx) * 0.5;
+          d = `M ${fx} ${fy} Q ${controlX} ${ty} ${tx} ${ty}`;
+        } else if (toStage.id === 'uji') {
+          const controlX = fx + (tx - fx) * 0.5;
+          d = `M ${fx} ${fy} Q ${controlX} ${ty} ${tx} ${ty}`;
+        }
+
+        path.setAttribute('d', d);
+        
+        const bothCompleted = gameState.completedStages.includes(fromStage.id) && gameState.completedStages.includes(toStage.id);
+        const sourceCompleted = gameState.completedStages.includes(fromStage.id);
+
+        if (bothCompleted) {
+          path.setAttribute('stroke', '#22c55e'); 
+          path.setAttribute('stroke-width', '3');
+          path.setAttribute('opacity', '0.8');
+        } else if (sourceCompleted && !toStage.locked) {
+          path.setAttribute('stroke', '#06b6d4'); 
+          path.setAttribute('stroke-width', '2.5');
+          path.setAttribute('opacity', '0.9');
+          path.setAttribute('stroke-dasharray', '5,5');
+        } else {
+          path.setAttribute('stroke', '#334155'); 
+          path.setAttribute('stroke-width', '1.5');
+          path.setAttribute('opacity', '0.4');
+        }
+        
+        path.setAttribute('fill', 'none');
+        svg.appendChild(path);
+      });
+    }
+
+    function updateTokenPosition(width, height) {
+      const token = document.getElementById('agentToken');
+      let currentLocId = 's1';
+      for (let i = 0; i < gameState.completedStages.length; i++) {
+        currentLocId = gameState.completedStages[i];
+      }
+
+      if (gameState.currentStageId) {
+        currentLocId = gameState.currentStageId;
+      }
+
+      const activeStage = gameState.stages[currentLocId];
+      if (activeStage) {
+        const pixelX = (activeStage.x / 140) * width;
+        const pixelY = (activeStage.y / 100) * height;
+
+        token.style.display = 'flex';
+        token.style.left = `${pixelX - 16}px`; 
+        token.style.top = `${pixelY - 45}px`; 
+      }
+    }
+
+    // --- FUNGSI KEMBALI KE PETA ---
+    function backToMap() {
+      playSynthSound('click');
+      gameState.currentStageId = null;
+      document.getElementById('screenStageFrame').classList.add('hidden');
+      document.getElementById('screenAdventureMap').classList.remove('hidden');
+      buildAdventureMap();
+    }
+
+    // --- FUNGSI NAVIGASI NODE PLANET DI PETA ---
+    function selectPlanetNode(stage) {
+      playSynthSound('click');
+      gameState.currentStageId = stage.id;
+      
+      const mapContainer = document.getElementById('mapNodesContainer');
+      const width = mapContainer.clientWidth || 800;
+      const height = mapContainer.clientHeight || 450;
+      updateTokenPosition(width, height);
+
+      setTimeout(() => {
+        loadStage(stage);
+      }, 700);
+    }
+
+    // --- FUNGSI KLIK KUIS JEMBATAN (STEP 1 & 2) ---
+    function checkKuisJembatanStep1(ans) {
+      if (ans === 'B') {
+        playSynthSound('correct');
+        gameState.jembatanStep = 2; 
+        showModalFeedback(true, "DEKRIPSI TAHAP 1 BENAR!", "Luar biasa! Mata dadu genap A = {2, 4, 6} dengan P(A) = 3/6, dan Prima 3 B = {3} dengan P(B) = 1/6. Karena tidak beririsan (saling lepas), P(A ∪ B) = 3/6 + 1/6 = 4/6 = 2/3. Bersiap untuk modul enkripsi DAN!", 0, () => {
+          loadStage(gameState.stages['s3']);
+        });
+      } else {
+        playSynthSound('wrong');
+        showModalFeedback(false, "SINKRONISASI DEKRIPSI GAGAL", "Gunakan formula penjumlahan saling lepas: P(A ∪ B) = P(A) + P(B). Hitung peluang genap ditambah peluang angka 3.");
+      }
+    }
+
+    function checkKuisJembatanStep2(ans) {
+      if (ans === 'C') {
+        playSynthSound('correct');
+        launchConfetti();
+        gameState.jembatanStep = 1; 
+        showModalFeedback(true, "SELURUH DEKRIPSI SELESAI!", 
+          "Sandi pelindung galaksi berhasil ditembus! Peluang Gambar pada koin P(A) = 1/2 dan peluang mata dadu genap P(B) = 3/6 = 1/2. Karena saling bebas, P(A ∩ B) = P(A) × P(B) = 1/2 × 1/2 = 1/4. Jalur Cabang A dan B sekarang telah terbuka lebar untuk dijelajahi!", 
+          20, () => {
+            gameState.unlockedBranches = true;
+            gameState.stages['s4a'].locked = false;
+            gameState.stages['s4b'].locked = false;
+            completeStage('s3', 0);
+          }
+        );
+      } else {
+        playSynthSound('wrong');
+        showModalFeedback(false, "SINKRONISASI GAGAL", "Gunakan formula perkalian saling bebas: P(A ∩ B) = P(A) × P(B). Berapa nilai P(Gambar) dikalikan dengan P(Genap)?");
+      }
+    }
+
+    // --- 6. ENGINE LOAD STAGE INTERAKTIF ---
+    function loadStage(stage) {
+      document.getElementById('screenAdventureMap').classList.add('hidden');
+      document.getElementById('screenStageFrame').classList.remove('hidden');
+
+      // Update Header Stage
+      document.getElementById('stageBadge').textContent = stage.id.toUpperCase();
+      document.getElementById('stageTitle').textContent = stage.name;
+      
+      gameState.activeMisi = `Planet ${stage.name}`;
+      document.getElementById('hudMisi').textContent = gameState.activeMisi;
+
+      const container = document.getElementById('stageContentArea');
+      container.innerHTML = "";
+
+      switch(stage.type) {
+        case 'teori_pendahuluan':
+          renderTeoriPendahuluan(container);
+          break;
+        case 'teori_materi_awal':
+          renderTeoriMateriAwal(container);
+          break;
+        case 'kuis_jembatan':
+          renderKuisJembatan(container);
+          break;
+        case 'teori_4a':
+          renderTeori4A(container);
+          break;
+        case 'roda_5a':
+          renderRoda5A(container);
+          break;
+        case 'teori_6a':
+          renderTeori6A(container);
+          break;
+        case 'match_7a':
+          renderMatch7A(container);
+          break;
+        case 'teori_4b':
+          renderTeori4B(container);
+          break;
+        case 'roda_5b':
+          renderRoda5B(container);
+          break;
+        case 'teori_6b':
+          renderTeori6B(container);
+          break;
+        case 'match_7b':
+          renderMatch7B(container);
+          break;
+        case 'uji_kompetensi':
+          renderUjiKompetensi(container);
+          break;
+        case 'epilog_selesai':
+          renderEpilogSelesai(container);
+          break;
+      }
+    }
+
+    // --- 7. RENDERING KONTEN & FORMULA MATEMATIKA ---
+
+    // 7.1 Stage 1: Pendahuluan (Dibuat Kompak Sempurna Bebas Scroll)
+    function renderTeoriPendahuluan(container) {
+      container.innerHTML = `
+        <div class="grid grid-cols-2 gap-3 h-full max-h-[85%] items-stretch p-1 text-xs md:text-sm">
+          <div class="glass-panel p-3 rounded-lg border flex flex-col justify-between h-full" style="border-color: rgba(6, 182, 212, 0.25);">
+            <div>
+              <h4 class="text-cyan-400 font-bold font-orbitron mb-1 flex items-center gap-1.5 text-readable text-xs md:text-sm">
+                <span>🚀</span> TRANSMISI MISI UTAMA
+              </h4>
+              <p class="leading-tight text-slate-300 text-readable text-xs md:text-sm" style="margin: 4px 0 0 0;">
+                Selamat datang di sektor kognitif <span class="text-white font-bold">Arcana-9</span>. 
+                Penyelamatan ekosistem planet ini membutuhkan pemahaman mendalam tentang teori peluang. 
+                Sistem utama kami dikelola oleh algoritma berbasis logika matematis, di mana setiap keputusan taktis dinilai dengan rasio peluang keberhasilan numerik.
+              </p>
+            </div>
+            <div class="text-xs text-cyan-300 bg-cyan-950/40 p-1.5 rounded border border-cyan-500/10 mt-2 text-readable" style="background: rgba(8, 47, 73, 0.4); border: 1px solid rgba(6, 182, 212, 0.25);">
+              Selesaikan misi pada planet untuk memperoleh Bintang Energi Galaksi!
+            </div>
+          </div>
+
+          <div class="glass-panel p-3 rounded-lg border flex flex-col justify-between h-full" style="border-color: rgba(234, 179, 8, 0.25);">
+            <div>
+              <h4 class="text-yellow-400 font-bold font-orbitron mb-1 flex items-center gap-1.5 text-readable text-xs md:text-sm">
+                <span>🎯</span> TARGET UTAMA MISI
+              </h4>
+              <ul class="space-y-1 text-slate-300 text-readable text-xs md:text-sm" style="padding-left: 0; list-style-type: none; margin: 4px 0 0 0;">
+                <li class="flex items-start gap-1.5"><span style="color: #facc15;">➤</span> Menguraikan kasus peluang saling lepas & tidak saling lepas.</li>
+                <li class="flex items-start gap-1.5"><span style="color: #facc15;">➤</span> Menganalisis kemunculan peluang saling bebas serta bersyarat.</li>
+                <li class="flex items-start gap-1.5"><span style="color: #facc15;">➤</span> Menyelesaikan Uji Kompetensi Akhir hingga tuntas.</li>
+              </ul>
+            </div>
+            
+            <button onclick="completeStage('s1', 15)" class="btn-primary w-full font-orbitron py-1.5 text-slate-955 font-black text-xs md:text-sm rounded transition-all tracking-wider uppercase shrink-0" style="margin-top: 10px;">
+              KONFIRMASI INTEGRASI MISI ✔️
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 7.2 Stage 2: Materi Awal (Layout Diperbaiki Bebas Scroll)
+    function renderTeoriMateriAwal(container) {
+      container.innerHTML = `
+        <div class="grid grid-cols-2 gap-3 h-full max-h-[85%] items-stretch p-1 text-xs md:text-sm">
+          <!-- Kotak Kiri: Dasar Peluang -->
+          <div class="glass-panel p-3 rounded-lg border flex flex-col justify-between h-full" style="border-color: rgba(6, 182, 212, 0.25);">
+            <div>
+              <h4 class="text-cyan-400 font-bold font-orbitron mb-1.5 flex items-center gap-1.5 text-readable text-xs md:text-sm">
+                <span>🧮</span> DEFINISI DASAR PELUANG
+              </h4>
+              <p class="leading-tight text-slate-300 mb-2 text-xs md:text-sm text-readable" style="margin-top: 4px;">
+                Peluang kejadian A dilambangkan dengan P(A), merupakan perbandingan antara jumlah titik sampel kejadian A dengan jumlah seluruh ruang sampel S.
+              </p>
+              <div class="bg-slate-900/80 p-2 rounded text-center border border-cyan-500/10 font-bold text-sm md:text-base text-cyan-300 font-orbitron text-readable" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(6, 182, 212, 0.2); margin-top: 6px;">
+                P(A) = n(A) / n(S)
+              </div>
+            </div>
+            <div class="text-[11px] text-slate-400 italic mt-2 text-readable">
+              Keterangan: n(A) = jumlah anggota kejadian A, n(S) = jumlah seluruh anggota ruang sampel S.
+            </div>
+          </div>
+
+          <!-- Kotak Kanan: Kejadian Majemuk -->
+          <div class="glass-panel p-3 rounded-lg border flex flex-col justify-between h-full" style="border-color: rgba(234, 179, 8, 0.25);">
+            <div>
+              <h4 class="text-yellow-400 font-bold font-orbitron mb-1 flex items-center gap-1.5 text-readable text-xs md:text-sm">
+                <span>⛓️</span> HUBUNGAN DAN & ATAU
+              </h4>
+              <p class="leading-relaxed text-slate-300 mb-2 text-xs md:text-sm text-readable" style="margin-top: 4px;">
+                Dalam kejadian majemuk, kata hubung menentukan aturan operasi peluang yang digunakan:
+              </p>
+              <div class="space-y-1.5">
+                <div class="bg-slate-900/80 p-1.5 rounded border border-yellow-500/10 text-xs text-yellow-300 font-orbitron text-readable" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(234, 179, 8, 0.2);">
+                  <span class="text-[10px] text-slate-400 block font-sans">Kata hubung "ATAU" (Gabungan ∪ - Penjumlahan):</span>
+                  P(A ∪ B) = P(A) + P(B) - P(A ∩ B)
+                </div>
+                <div class="bg-slate-900/80 p-1.5 rounded border border-yellow-500/10 text-xs text-yellow-300 font-orbitron text-readable" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(234, 179, 8, 0.2);">
+                  <span class="text-[10px] text-slate-400 block font-sans">Kata hubung "DAN" (Irisan ∩ - Perkalian):</span>
+                  P(A ∩ B) = P(A) × P(B)
+                </div>
+              </div>
+            </div>
+            
+            <button onclick="completeStage('s2', 15)" class="btn-primary font-orbitron py-1.5 text-slate-955 font-black text-xs md:text-sm rounded mt-3 shrink-0" style="width: 100%;">
+              RESTORASI DATA MATERI ✔️
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 7.3 Stage 3: Kuis Jembatan (Bebas Scroll & Teks Option Putih Terang)
+    function renderKuisJembatan(container) {
+      if (gameState.jembatanStep === 1) {
+        container.innerHTML = `
+          <div class="flex flex-col items-center justify-center p-3 text-xs md:text-sm max-w-xl mx-auto text-center gap-2 max-h-[85%]">
+            <div class="w-10 h-10 bg-yellow-950/30 border border-yellow-500/40 rounded-full flex items-center justify-center text-yellow-400 text-lg animate-bounce" style="width: 40px; height: 40px;">
+              <span>🌉</span>
+            </div>
+            <h4 class="text-sm font-bold text-white font-orbitron text-readable">KUIS JEMBATAN DEKRIPSI (TAHAP 1/2)</h4>
+            <p class="text-cyan-400 font-bold text-xs md:text-sm uppercase tracking-wider text-readable" style="color: #22d3ee; margin:0;">Topik: Aturan Penjumlahan ("ATAU")</p>
+            <p class="text-slate-300 leading-relaxed text-xs md:text-sm text-readable" style="margin: 4px 0 6px 0;">
+              Sebuah dadu bersisi 6 dilempar sekali. Berapakah peluang munculnya mata dadu genap <span class="text-yellow-400 font-bold">ATAU</span> mata dadu bernilai prima 3?
+            </p>
+            
+            <div class="grid grid-cols-2 gap-2.5 w-full my-1 text-left text-xs md:text-sm">
+              <button onclick="checkKuisJembatanStep1('A')" class="option-btn text-readable">
+                <strong>A.</strong> 1/3 (Mutually exclusive)
+              </button>
+              <button onclick="checkKuisJembatanStep1('B')" class="option-btn text-readable">
+                <strong>B.</strong> 2/3 (Genap: {2,4,6} & Prima 3: {3})
+              </button>
+              <button onclick="checkKuisJembatanStep1('C')" class="option-btn text-readable">
+                <strong>C.</strong> 1/2 (Peluang dasar tunggal)
+              </button>
+              <button onclick="checkKuisJembatanStep1('D')" class="option-btn text-readable">
+                <strong>D.</strong> 5/6 (Semua kemungkinan)
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="flex flex-col items-center justify-center p-4 text-xs md:text-sm max-w-xl mx-auto text-center gap-2 max-h-[85%]">
+            <div class="w-10 h-10 bg-cyan-950/30 border border-cyan-500/40 rounded-full flex items-center justify-center text-cyan-400 text-lg animate-pulse" style="width: 40px; height: 40px;">
+              <span>🔗</span>
+            </div>
+            <h4 class="text-sm font-bold text-white font-orbitron text-readable">KUIS JEMBATAN DEKRIPSI (TAHAP 2/2)</h4>
+            <p class="text-yellow-400 font-bold text-xs md:text-sm uppercase tracking-wider text-readable" style="color: #facc15; margin:0;">Topik: Aturan Perkalian ("DAN")</p>
+            <p class="text-slate-300 leading-relaxed text-xs md:text-sm text-readable" style="margin: 4px 0 6px 0;">
+              Sebuah koin adil (Gambar/Angka) and sebuah dadu sisi 6 dilempar bersamaan sekali. Berapa peluang munculnya Gambar pada koin <span class="text-cyan-400 font-bold">DAN</span> mata dadu bernilai genap?
+            </p>
+            
+            <div class="grid grid-cols-2 gap-2.5 w-full my-1 text-left text-xs md:text-sm">
+              <button onclick="checkKuisJembatanStep2('A')" class="option-btn text-readable">
+                <strong>A.</strong> 1/2 (Kejadian koin saja)
+              </button>
+              <button onclick="checkKuisJembatanStep2('B')" class="option-btn text-readable">
+                <strong>B.</strong> 1/3 (Penjumlahan terbalik)
+              </button>
+              <button onclick="checkKuisJembatanStep2('C')" class="option-btn text-readable">
+                <strong>C.</strong> 1/4 (P(Gambar) 1/2 &times; P(Genap) 1/2 = 1/4)
+              </button>
+              <button onclick="checkKuisJembatanStep2('D')" class="option-btn text-readable">
+                <strong>D.</strong> 3/4 (Peluang gabungan)
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // 7.4 Cabang A - Stage 4A: Teori Kejadian Saling Lepas & Saling Tidak Lepas (Bebas Scroll)
+    function renderTeori4A(container) {
+      container.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 h-full max-h-[85%] items-stretch p-1 text-xs md:text-sm">
+          <!-- Saling Lepas -->
+          <div class="glass-panel p-4 rounded-lg border flex flex-col justify-between h-full" style="border-color: rgba(6, 182, 212, 0.25);">
+            <div>
+              <h4 class="text-cyan-400 font-bold font-orbitron mb-1 flex items-center gap-1.5 text-readable text-xs md:text-sm">
+                <span>➖</span> 1. SALING LEPAS (Saling Asing)
+              </h4>
+              <p class="leading-relaxed text-slate-300 text-xs md:text-sm mb-2 text-readable" style="margin-top: 4px;">
+                Dua kejadian A and B dikatakan saling lepas jika tidak mungkin terjadi bersamaan (A ∩ B = ∅). Formula jumlah peluangnya:
+              </p>
+              <div class="bg-slate-900/80 p-2 rounded text-center border border-cyan-500/10 font-bold text-cyan-300 font-orbitron text-readable text-xs md:text-sm" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(6, 182, 212, 0.25);">
+                P(A ∪ B) = P(A) + P(B)
+              </div>
+            </div>
+            <div class="text-xs text-slate-400 italic mt-2 text-readable">Contoh: Melempar dadu mendapatkan mata dadu ganjil ATAU genap bersamaan.</div>
+          </div>
+
+          <!-- Saling Tidak Lepas -->
+          <div class="glass-panel p-4 rounded-lg border flex flex-col justify-between h-full" style="border-color: rgba(234, 179, 8, 0.25);">
+            <div>
+              <h4 class="text-yellow-400 font-bold font-orbitron mb-1 flex items-center gap-1.5 text-readable text-xs md:text-sm">
+                <span>🕸️</span> 2. SALING TIDAK LEPAS (Beririsan)
+              </h4>
+              <p class="leading-relaxed text-slate-300 text-xs md:text-sm mb-2 text-readable" style="margin-top: 4px;">
+                Jika dua kejadian memiliki anggota yang sama (irisan A ∩ B ≠ ∅). Irisannya harus dikurangkan agar tidak dihitung ganda:
+              </p>
+              <div class="bg-slate-900/80 p-2.5 rounded text-center border border-yellow-500/10 font-bold text-yellow-300 font-orbitron text-readable text-xs md:text-sm" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(234, 179, 8, 0.25);">
+                P(A ∪ B) = P(A) + P(B) - P(A ∩ B)
+              </div>
+            </div>
+            
+            <button onclick="completeStage('s4a', 15)" class="btn-primary w-full font-orbitron py-1.5 text-slate-955 font-black text-xs md:text-sm rounded transition-all tracking-wider m-auto shrink-0" style="width: 100%;">
+              KONFIRMASI MATERI ✔️
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 7.5 Cabang A - Stage 5A: Roda Putar Klasifikasi (Dibuat Kompak Sempurna Tanpa Scroll)
+    function renderRoda5A(container) {
+      container.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 h-full max-h-[95%] items-stretch p-1 text-xs md:text-sm">
+          <!-- KIRI: Roda Putar SVG (Diperkecil Agar Muat Di Layar Laptop) -->
+          <div class="flex flex-col items-center justify-center">
+            <div class="relative" style="width: 110px; height: 110px;">
+              <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-6 bg-red-500 z-30 filter drop-shadow-md" style="width: 12px; height: 18px; background: #ef4444; clip-path: polygon(50% 100%, 0 0, 100% 0); top: -6px;"></div>
+              
+              <svg id="wheelSVGA" class="w-full h-full transform transition-all duration-[1200ms] ease-out origin-center" viewBox="0 0 100 100" style="width:100%; height:100%;">
+                <circle cx="50" cy="50" r="48" fill="#030712" stroke="#00f2fe" stroke-width="2" />
+                <path d="M50,50 L50,2 A48,48 0 0,1 98,50 Z" fill="#0f172a" stroke="#1e293b" />
+                <path d="M50,50 L98,50 A48,48 0 0,1 50,98 Z" fill="#1e1b4b" stroke="#1e293b" />
+                <path d="M50,50 L50,98 A48,48 0 0,1 2,50 Z" fill="#0f172a" stroke="#1e293b" />
+                <path d="M50,50 L2,50 A48,48 0 0,1 50,2 Z" fill="#1e1b4b" stroke="#1e293b" />
+                <circle cx="50" cy="50" r="8" fill="#eab308" />
+              </svg>
+            </div>
+            
+            <button id="spinBtnA" onclick="spinWheelA()" class="btn-primary font-orbitron px-4 py-1 rounded transition-all text-xs md:text-sm shadow-none" style="margin-top: 10px;">
+              PUTAR RODA DEKRIPSI 🎯
+            </button>
+          </div>
+
+          <!-- KANAN: Hasil Kasus & Klasifikasi -->
+          <div class="glass-panel p-3 rounded-lg border flex flex-col justify-between h-full" style="border-color: rgba(6, 182, 212, 0.25);">
+            <div>
+              <h4 class="text-cyan-400 font-bold font-orbitron text-xs mb-1 text-readable" style="color: #22d3ee;">INTEGRATOR KASUS</h4>
+              <div id="caseBoxA" class="bg-slate-900/60 p-2.5 rounded border text-slate-300 min-h-[70px] italic flex items-center justify-center text-center text-xs md:text-sm text-readable" style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(6, 182, 212, 0.2);">
+                Silakan putar roda terlebih dahulu untuk memunculkan kasus acak!
+              </div>
+            </div>
+
+            <div id="classifButtonsA" class="hidden grid grid-cols-2 gap-2 mt-2" style="width:100%;">
+              <button onclick="submitClassifA('saling_lepas')" class="btn-primary py-1.5 rounded text-xs md:text-sm font-bold text-white transition-all text-center">
+                SALING LEPAS
+              </button>
+              <button onclick="submitClassifA('tidak_saling_lepas')" class="btn-secondary py-1.5 rounded text-xs md:text-sm font-bold text-white transition-all text-center">
+                S. TIDAK LEPAS
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    let currentRotationA = 0;
+    function spinWheelA() {
+      playSynthSound('spin');
+      document.getElementById('spinBtnA').disabled = true;
+      document.getElementById('spinBtnA').classList.add('opacity-50');
+
+      const svg = document.getElementById('wheelSVGA');
+      const randomDeg = 1440 + Math.floor(Math.random() * 360);
+      currentRotationA += randomDeg;
+      svg.style.transform = `rotate(${currentRotationA}deg)`;
+
+      setTimeout(() => {
+        const idx = Math.floor(Math.random() * dbSpinA.length);
+        currentSpinAData = dbSpinA[idx];
+
+        document.getElementById('caseBoxA').innerHTML = `
+          <div class="text-xs md:text-sm text-white font-semibold text-readable">
+            <span class="text-yellow-400">⚠️ KASUS DEKRIPSI:</span><br>
+            "${currentSpinAData.kasus}"
+          </div>
+        `;
+        document.getElementById('classifButtonsA').classList.remove('hidden');
+        document.getElementById('spinBtnA').disabled = false;
+        document.getElementById('spinBtnA').classList.remove('opacity-50');
+      }, 1200);
+    }
+
+    function submitClassifA(ans) {
+      if (!currentSpinAData) return;
+      if (ans === currentSpinAData.jawaban) {
+        playSynthSound('correct');
+        launchConfetti();
+        showModalFeedback(true, "DEKRIPSI SUKSES!", currentSpinAData.penjelas, 20, () => {
+          completeStage('s5a', 0);
+        });
+      } else {
+        playSynthSound('wrong');
+        showModalFeedback(false, "SINKRONISASI SALAH", currentSpinAData.penjelas);
+      }
+    }
+
+    let currentRotationB = 0;
+    function spinWheelB() {
+      playSynthSound('spin');
+      document.getElementById('spinBtnB').disabled = true;
+      document.getElementById('spinBtnB').classList.add('opacity-50');
+
+      const svg = document.getElementById('wheelSVGB');
+      const randomDeg = 1440 + Math.floor(Math.random() * 360);
+      currentRotationB += randomDeg;
+      svg.style.transform = `rotate(${currentRotationB}deg)`;
+
+      setTimeout(() => {
+        const idx = Math.floor(Math.random() * dbSpinB.length);
+        currentSpinBData = dbSpinB[idx];
+
+        document.getElementById('caseBoxB').innerHTML = `
+          <div class="text-xs md:text-sm text-white font-semibold text-readable">
+            <span class="text-yellow-400">⚠️ KASUS DEKRIPSI:</span><br>
+            "${currentSpinBData.kasus}"
+          </div>
+        `;
+        document.getElementById('classifButtonsB').classList.remove('hidden');
+        document.getElementById('spinBtnB').disabled = false;
+        document.getElementById('spinBtnB').classList.remove('opacity-50');
+      }, 1200);
+    }
+
+    function submitClassifB(ans) {
+      if (!currentSpinBData) return;
+      if (ans === currentSpinBData.jawaban) {
+        playSynthSound('correct');
+        launchConfetti();
+        showModalFeedback(true, "DEKRIPSI SUKSES!", currentSpinBData.penjelas, 20, () => {
+          completeStage('s5b', 0);
+        });
+      } else {
+        playSynthSound('wrong');
+        showModalFeedback(false, "SINKRONISASI SALAH", currentSpinBData.penjelas);
+      }
+    }
+
+    // 7.6 Cabang A - Stage 6A: Contoh Soal & Pembahasan (DIUBAH MENJADI LAYAR GRID KIRI-KANAN KOKOH BEBAS SCROLL, FONT DISET STABIL & JELAS DI LAPTOP)
+    function renderTeori6A(container) {
+      container.innerHTML = `
+        <div class="flex flex-col h-full justify-between p-1 text-xs md:text-sm">
+          <!-- Grid Kolom Kiri & Kanan -->
+          <div class="grid grid-cols-2 gap-3 flex-1 items-stretch max-h-[85%]">
+            
+            <!-- Masalah 1: Saling Tidak Lepas -->
+            <div class="glass-panel p-2.5 rounded-lg border flex flex-col justify-between" style="border-color: rgba(6, 182, 212, 0.25);">
+              <div>
+                <h4 class="text-cyan-400 font-bold font-orbitron flex items-center gap-1.5 text-xs md:text-sm mb-1 text-readable" style="color: #22d3ee;">
+                  📖 MASALAH I (SALING TIDAK LEPAS)
+                </h4>
+                <p class="text-slate-300 leading-tight mb-2 text-xs md:text-sm text-readable">
+                  <strong>Kasus:</strong> Dari 20 kartu (1-20), diambil 1 acak. Peluang mendapatkan kartu kelipatan 3 <span class="text-yellow-400 font-bold">ATAU</span> bilangan prima!
+                </p>
+                <div class="bg-slate-900/80 p-2 rounded border leading-tight text-xs text-slate-300 space-y-0.5 font-mono text-readable" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(71, 85, 105, 0.6);">
+                  <p><span class="text-cyan-300 font-bold">1. Ruang Sampel:</span> n(S) = 20</p>
+                  <p><span class="text-cyan-300 font-bold">2. Klip 3:</span> {3,6,9,12,15,18} &rArr; P(A)=6/20</p>
+                  <p><span class="text-cyan-300 font-bold">3. Prima:</span> {2,3,5,7,11,13,17,19} &rArr; P(B)=8/20</p>
+                  <p><span class="text-cyan-300 font-bold">4. Irisan (A ∩ B):</span> {3} &rArr; n(A ∩ B) = 1</p>
+                </div>
+              </div>
+              <div class="font-bold text-yellow-300 text-xs md:text-sm pt-1 text-readable" style="border-top: 1px solid rgba(148, 163, 184, 0.2); color: #facc15; margin-top: 10px;">
+                P(A ∪ B) = 6/20 + 8/20 - 1/20 = 13/20
+              </div>
+            </div>
+
+            <!-- Masalah 2: Saling Lepas -->
+            <div class="glass-panel p-2.5 rounded-lg border flex flex-col justify-between" style="border-color: rgba(234, 179, 8, 0.25);">
+              <div>
+                <h4 class="text-yellow-400 font-bold font-orbitron flex items-center gap-1.5 text-xs md:text-sm mb-1 text-readable" style="color: #facc15;">
+                  📖 MASALAH II (SALING LEPAS)
+                </h4>
+                <p class="text-slate-300 leading-tight mb-2 text-xs md:text-sm text-readable">
+                  <strong>Kasus:</strong> Dua buah dadu dilempar sekali bersamaan. Peluang munculnya jumlah mata dadu bernilai 4 <span class="text-yellow-400 font-bold">ATAU</span> bernilai 11?
+                </p>
+                <div class="bg-slate-900/80 p-2 rounded border leading-tight text-xs text-slate-300 space-y-0.5 font-mono text-readable" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(71, 85, 105, 0.6);">
+                  <p><span class="text-cyan-300 font-bold">1. Ruang Sampel:</span> 6 × 6 &rArr; n(S) = 36</p>
+                  <p><span class="text-cyan-300 font-bold">2. Jumlah 4:</span> {(1,3), (2,2), (3,1)} &rArr; P(A)=3/36</p>
+                  <p><span class="text-cyan-300 font-bold">3. Jumlah 11:</span> {(5,6), (6,5)} &rArr; P(B)=2/36</p>
+                  <p><span class="text-cyan-300 font-bold">4. Irisan (A ∩ B):</span> Saling Lepas &rArr; n(A ∩ B) = 0</p>
+                </div>
+              </div>
+              <div class="font-bold text-yellow-300 text-xs md:text-sm pt-1 text-readable" style="border-top: 1px solid rgba(148, 163, 184, 0.2); color: #facc15; margin-top: 10px;">
+                P(A ∪ B) = P(A) + P(B) = 3/36 + 2/36 = 5/36
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Tombol Tindakan -->
+          <div class="flex items-center justify-between pt-2 shrink-0">
+            <div class="text-xs text-slate-400 text-readable">Pahami seluruh kasus analisis di atas sebelum melanjutkan dekripsi!</div>
+            <button onclick="completeStage('s6a', 15)" class="btn-primary font-orbitron py-1.5 px-6 text-slate-955 font-black text-xs md:text-sm rounded transition-all shadow-md">
+              PAHAMI & LANJUT ✔️
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 7.7 Cabang A - Stage 7A: Menjodohkan Kartu
+    let selectedLeftMatchId = null;
+    function renderMatch7A(container) {
+      container.innerHTML = `
+        <div class="w-full h-full flex flex-col justify-between p-1.5 text-xs md:text-sm">
+          <div class="text-xs md:text-sm text-yellow-400 font-bold mb-2 text-center flex items-center justify-center gap-1 text-readable" style="color: #facc15;">
+            ℹ️ Pilih satu soal berwarna biru, lalu pilih pasangan jawaban yang tepat di kanan.
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 flex-1 items-center">
+            <div class="space-y-3 flex flex-col justify-center">
+              <div id="matchLeft-7a-1" onclick="selectMatchLeft('7a-1')" class="p-3 bg-blue-950/40 border border-blue-500/30 hover:border-blue-400 rounded cursor-pointer transition-all text-slate-200">
+                <p class="font-bold text-cyan-300 text-readable" style="color: #22d3ee; margin: 0 0 4px 0;">Soal 1</p>
+                <p class="leading-tight text-xs md:text-sm text-readable" style="margin: 0;">Sebuah dadu bersisi 6 dilempar sekali. Peluang muncul mata dadu 2 ATAU mata dadu 5.</p>
+              </div>
+
+              <div id="matchLeft-7a-2" onclick="selectMatchLeft('7a-2')" class="p-3 bg-blue-950/40 border border-blue-500/30 hover:border-blue-400 rounded cursor-pointer transition-all text-slate-200">
+                <p class="font-bold text-cyan-300 text-readable" style="color: #22d3ee; margin: 0 0 4px 0;">Soal 2</p>
+                <p class="leading-tight text-xs md:text-sm text-readable" style="margin: 0;">Dua dadu dilempar bersamaan sekali. Peluang mendapatkan jumlah mata dadu 4 ATAU jumlah dadu 10.</p>
+              </div>
+
+              <div id="matchLeft-7a-3" onclick="selectMatchLeft('7a-3')" class="p-3 bg-blue-950/40 border border-blue-500/30 hover:border-blue-400 rounded cursor-pointer transition-all text-slate-200">
+                <p class="font-bold text-cyan-300 text-readable" style="color: #22d3ee; margin: 0 0 4px 0;">Soal 3</p>
+                <p class="leading-tight text-xs md:text-sm text-readable" style="margin: 0;">Mengambil 1 kartu dari nomor 1-10 secara acak. Peluang terambil nomor kelipatan 2 ATAU prima.</p>
+              </div>
+            </div>
+
+            <div class="space-y-3 flex flex-col justify-center">
+              <div id="matchRight-7a-B" onclick="selectMatchRight('7a-B')" class="p-3 bg-slate-900 border border-slate-700 hover:border-cyan-400 rounded cursor-pointer transition-all text-center font-bold text-slate-300 text-readable">
+                <span class="text-sm md:text-base">4 / 5</span>
+              </div>
+
+              <div id="matchRight-7a-A" onclick="selectMatchRight('7a-A')" class="p-3 bg-slate-900 border border-slate-700 hover:border-cyan-400 rounded cursor-pointer transition-all text-center font-bold text-slate-300 text-readable">
+                <span class="text-sm md:text-base">1 / 3</span>
+              </div>
+
+              <div id="matchRight-7a-C" onclick="selectMatchRight('7a-C')" class="p-3 bg-slate-900 border border-slate-700 hover:border-cyan-400 rounded cursor-pointer transition-all text-center font-bold text-slate-300 text-readable">
+                <span class="text-sm md:text-base">1 / 6</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="matchCompleted7A" class="hidden text-center mt-2 shrink-0">
+            <button onclick="completeMatchStage7A()" class="btn-primary px-8 py-2 text-slate-955 font-black text-xs md:text-sm rounded transition-all">
+              DEKRIPSI TOTAL SELESAI ✔️
+            </button>
+          </div>
+        </div>
+      `;
+      selectedLeftMatchId = null;
+      matches7A = { '7a-1': false, '7a-2': false, '7a-3': false };
+    }
+
+    let matches7A = { '7a-1': false, '7a-2': false, '7a-3': false };
+    const matchPairs7A = {
+      '7a-1': '7a-A',
+      '7a-2': '7a-C',
+      '7a-3': '7a-B'
+    };
+
+    function selectMatchLeft(id) {
+      if (matches7A[id]) return;
+      playSynthSound('click');
+      
+      if (selectedLeftMatchId) {
+        document.getElementById(`matchLeft-${selectedLeftMatchId}`).classList.remove('border-yellow-400', 'border-2');
+      }
+      
+      selectedLeftMatchId = id;
+      document.getElementById(`matchLeft-${id}`).classList.add('border-yellow-400', 'border-2');
+    }
+
+    function selectMatchRight(rightId) {
+      if (!selectedLeftMatchId) {
+        playSynthSound('wrong');
+        return;
+      }
+
+      const expectedRightId = matchPairs7A[selectedLeftMatchId];
+
+      if (rightId === expectedRightId) {
+        playSynthSound('correct');
+        const leftId = selectedLeftMatchId;
+        matches7A[leftId] = true;
+
+        document.getElementById(`matchLeft-${leftId}`).className = "p-3 bg-green-950/60 border-2 border-green-500 rounded text-slate-300 cursor-not-allowed transition-all";
+        document.getElementById(`matchRight-${rightId}`).className = "p-3 bg-green-950/60 border-2 border-green-500 rounded text-slate-300 cursor-not-allowed text-center transition-all";
+        
+        selectedLeftMatchId = null;
+
+        if (Object.values(matches7A).every(v => v === true)) {
+          launchConfetti();
+          document.getElementById('matchCompleted7A').classList.remove('hidden');
+        }
+      } else {
+        playSynthSound('wrong');
+        document.getElementById(`matchLeft-${selectedLeftMatchId}`).classList.remove('border-yellow-400', 'border-2');
+        selectedLeftMatchId = null;
+        showModalFeedback(false, "SINKRONISASI SALAH", "Pasangan pecahan nilai peluang kurang tepat. Hitung perkalian peluangnya secara perlahan!");
+      }
+    }
+
+    function completeMatchStage7A() {
+      completeStage('s7a', 30);
+    }
+
+    // 7.8 Cabang B - Stage 4B: Teori Kejadian Saling Bebas & Bersyarat (Bebas Scroll)
+    function renderTeori4B(container) {
+      container.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 h-full max-h-[95%] items-stretch p-1 text-xs md:text-sm">
+          <!-- Saling Bebas -->
+          <div class="glass-panel p-4 rounded-lg border flex flex-col justify-between h-full" style="border-color: rgba(6, 182, 212, 0.25);">
+            <div>
+              <h4 class="text-cyan-400 font-bold font-orbitron mb-1 flex items-center gap-1.5 text-readable text-xs md:text-sm">
+                <span>🔄</span> 1. KEJADIAN SALING BEBAS
+              </h4>
+              <p class="leading-relaxed text-slate-300 text-xs md:text-sm mb-2 text-readable" style="margin-top: 4px;">
+                Dua kejadian dikatakan saling bebas jika kejadian A tidak mempengaruhi peluang terjadinya B. Irisannya didapat dengan perkalian langsung:
+              </p>
+              <div class="bg-slate-900/80 p-2 rounded text-center border border-cyan-500/10 font-bold text-cyan-300 font-orbitron text-readable text-xs md:text-sm" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(6, 182, 212, 0.25);">
+                P(A ∩ B) = P(A) &times; P(B)
+              </div>
+            </div>
+            <div class="text-xs text-slate-400 italic mt-2 text-readable">Contoh: Melempar koin perak dan melempar dadu merah secara bersamaan.</div>
+          </div>
+
+          <!-- Bersyarat -->
+          <div class="glass-panel p-4 rounded-lg border flex flex-col justify-between h-full" style="border-color: rgba(234, 179, 8, 0.25);">
+            <div>
+              <h4 class="text-yellow-400 font-bold font-orbitron mb-1 flex items-center gap-1.5 text-readable text-xs md:text-sm">
+                <span>📉</span> 2. KEJADIAN BERSYARAT
+              </h4>
+              <p class="leading-relaxed text-slate-300 text-xs md:text-sm mb-2 text-readable" style="margin-top: 4px;">
+                Peluang munculnya kejadian B yang sangat dipengaruhi oleh terjadinya kejadian A sebelumnya (biasanya kasus pengambilan tanpa pengembalian):
+              </p>
+              <div class="bg-slate-900/80 p-2 rounded text-center border border-yellow-500/10 font-bold text-yellow-300 font-orbitron text-readable text-xs md:text-sm" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(234, 179, 8, 0.25);">
+                P(A ∩ B) = P(A) &times; P(B | A)
+              </div>
+            </div>
+            
+            <button onclick="completeStage('s4b', 15)" class="btn-primary w-full font-orbitron py-1.5 text-slate-950 font-black text-xs md:text-sm rounded mt-4 shrink-0" style="width: 100%;">
+              KONFIRMASI MATERI ✔️
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 7.9 Cabang B - Stage 5B: Roda Putar Klasifikasi (Dibuat Kompak Sempurna Tanpa Scroll)
+    function renderRoda5B(container) {
+      container.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 h-full max-h-[95%] items-stretch p-1 text-xs md:text-sm">
+          <!-- KIRI: Roda Putar SVG (Diperkecil Agar Muat Di Layar Laptop) -->
+          <div class="flex flex-col items-center justify-center">
+            <div class="relative" style="width: 110px; height: 110px;">
+              <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-6 bg-red-500 z-30 filter drop-shadow-md" style="width: 12px; height: 18px; background: #ef4444; clip-path: polygon(50% 100%, 0 0, 100% 0); top: -6px;"></div>
+              
+              <svg id="wheelSVGB" class="w-full h-full transform transition-all duration-[1200ms] ease-out origin-center" viewBox="0 0 100 100" style="width:100%; height:100%;">
+                <circle cx="50" cy="50" r="48" fill="#030712" stroke="#eab308" stroke-width="2" />
+                <path d="M50,50 L50,2 A48,48 0 0,1 98,50 Z" fill="#0f172a" stroke="#1e293b" />
+                <path d="M50,50 L98,50 A48,48 0 0,1 50,98 Z" fill="#1e1b4b" stroke="#1e293b" />
+                <path d="M50,50 L50,98 A48,48 0 0,1 2,50 Z" fill="#0f172a" stroke="#1e293b" />
+                <path d="M50,50 L2,50 A48,48 0 0,1 50,2 Z" fill="#1e1b4b" stroke="#1e293b" />
+                <circle cx="50" cy="50" r="8" fill="#00f2fe" />
+              </svg>
+            </div>
+            
+            <button id="spinBtnB" onclick="spinWheelB()" class="btn-primary font-orbitron px-4 py-1.5 rounded transition-all text-xs md:text-sm shadow-none" style="margin-top: 10px;">
+              PUTAR RODA DEKRIPSI 🎯
+            </button>
+          </div>
+
+          <!-- KANAN -->
+          <div class="glass-panel p-4 rounded-lg border flex flex-col justify-between h-full" style="border-color: rgba(234, 179, 8, 0.25);">
+            <div>
+              <h4 class="text-yellow-400 font-bold font-orbitron text-xs md:text-sm mb-1 text-readable" style="color: #facc15; margin: 0 0 4px 0;">INTEGRATOR KASUS</h4>
+              <div id="caseBoxB" class="bg-slate-900/60 p-2.5 rounded border text-slate-300 min-h-[70px] italic flex items-center justify-center text-center text-xs md:text-sm text-readable" style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(234, 179, 8, 0.25);">
+                Silakan putar roda terlebih dahulu untuk memunculkan kasus acak!
+              </div>
+            </div>
+
+            <div id="classifButtonsB" class="hidden grid grid-cols-2 gap-2 mt-2" style="width:100%;">
+              <button onclick="submitClassifB('saling_bebas')" class="btn-primary py-1.5 rounded text-xs md:text-sm font-bold text-white transition-all text-center" style="color: #030712 !important;">
+                SALING BEBAS
+              </button>
+              <button onclick="submitClassifB('bersyarat')" class="btn-secondary py-1.5 rounded text-xs md:text-sm font-bold text-white transition-all text-center" style="color: #ffffff !important;">
+                BERSYARAT
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 7.10 Cabang B - Stage 6B: Contoh Soal & Pembahasan (DIUBAH MENJADI LAYAR GRID KIRI-KANAN KOKOH BEBAS SCROLL, FONT DISET STABIL & JELAS DI LAPTOP)
+    function renderTeori6B(container) {
+      container.innerHTML = `
+        <div class="flex flex-col h-full justify-between p-1 text-xs md:text-sm">
+          <!-- Grid Kolom Kiri & Kanan -->
+          <div class="grid grid-cols-2 gap-3 flex-1 items-stretch max-h-[85%]">
+            
+            <!-- Masalah 1: Saling Bebas -->
+            <div class="glass-panel p-2.5 rounded-lg border flex flex-col justify-between" style="border-color: rgba(6, 182, 212, 0.25);">
+              <div>
+                <h4 class="text-cyan-400 font-bold font-orbitron flex items-center gap-1.5 text-xs md:text-sm mb-1 text-readable" style="color: #22d3ee;">
+                  📖 MASALAH I (SALING BEBAS)
+                </h4>
+                <p class="text-slate-300 leading-tight mb-2 text-xs md:text-sm text-readable">
+                  <strong>Kasus:</strong> Sekotak roket berisi 5 chip hijau & 3 kuning. Diambil 2 chip berturut-turut <span class="text-cyan-400 font-bold">dengan pengembalian</span>. Peluang Hijau lalu Kuning?
+                </p>
+                <div class="bg-slate-900/80 p-2.5 rounded border leading-tight text-xs text-slate-300 space-y-0.5 font-mono text-readable" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(71, 85, 105, 0.6);">
+                  <p><span class="text-cyan-300 font-bold">1. Total Chip:</span> 5 + 3 = 8 &rArr; n(S) = 8</p>
+                  <p><span class="text-cyan-300 font-bold">2. Pengambilan I (Hijau):</span> P(H) = 5/8</p>
+                  <p><span class="text-cyan-300 font-bold">3. Pengambilan II (Kuning):</span> Tetap 8 chip. P(K) = 3/8</p>
+                  <p><span class="text-cyan-300 font-bold">4. Kejadian:</span> Saling bebas (tidak memengaruhi)</p>
+                </div>
+              </div>
+              <div class="font-bold text-yellow-300 text-xs md:text-sm pt-1 text-readable" style="border-top: 1px solid rgba(148, 163, 184, 0.2); color: #facc15; margin-top: 10px;">
+                P(H ∩ K) = P(H) × P(K) = 5/8 × 3/8 = 15/64
+              </div>
+            </div>
+
+            <!-- Masalah 2: Bersyarat -->
+            <div class="glass-panel p-2.5 rounded-lg border flex flex-col justify-between" style="border-color: rgba(234, 179, 8, 0.25);">
+              <div>
+                <h4 class="text-yellow-400 font-bold font-orbitron flex items-center gap-1.5 text-xs md:text-sm mb-1 text-readable" style="color: #facc15;">
+                  📖 MASALAH II (BERSYARAT)
+                </h4>
+                <p class="text-slate-300 leading-tight mb-2 text-xs md:text-sm text-readable">
+                  <strong>Kasus:</strong> Kotak berisi 4 biru & 2 merah. Diambil 2 kelereng berturut-turut <span class="text-red-400 font-bold">tanpa pengembalian</span>. Peluang pertama Merah lalu kedua Biru?
+                </p>
+                <div class="bg-slate-900/80 p-2 rounded border leading-tight text-xs text-slate-300 space-y-0.5 font-mono text-readable" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(71, 85, 105, 0.6);">
+                  <p><span class="text-cyan-300 font-bold">1. Total Kelereng:</span> 4 + 2 = 6 &rArr; n(S) = 6</p>
+                  <p><span class="text-cyan-300 font-bold">2. Pengambilan I (Merah):</span> P(M) = 2/6 = 1/3</p>
+                  <p><span class="text-cyan-300 font-bold">3. Pengambilan II (Kuning):</span> Sisa 5 kelereng (4 biru). P(B|M) = 4/5</p>
+                  <p><span class="text-cyan-300 font-bold">4. Kejadian:</span> Bersyarat (pengaruh sisa)</p>
+                </div>
+              </div>
+              <div class="font-bold text-yellow-300 text-xs md:text-sm pt-1 text-readable" style="border-top: 1px solid rgba(148, 163, 184, 0.2); color: #facc15; margin-top: 10px;">
+                P(M ∩ B) = P(M) × P(B|M) = 1/3 × 4/5 = 4/15
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Tombol Tindakan Selalu Muncul Di Sini -->
+          <div class="flex items-center justify-between pt-2 shrink-0">
+            <div class="text-xs text-slate-400 text-readable">Pahamilah aturan perkalian mandiri ini untuk membuka kuis menjodohkan bagian B.</div>
+            <button onclick="completeStage('s6b', 15)" class="btn-primary font-orbitron py-1.5 px-6 text-slate-955 font-black text-xs md:text-sm rounded transition-all shadow-md">
+              PAHAMI & LANJUT ✔️
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 7.11 Cabang B - Stage 7B: Menjodohkan Kartu (Bebas Scroll)
+    let selectedLeftMatchIdB = null;
+    let matches7B = { '7b-1': false, '7b-2': false, '7b-3': false };
+    function renderMatch7B(container) {
+      container.innerHTML = `
+        <div class="w-full h-full flex flex-col justify-between p-1.5 text-xs md:text-sm" style="max-height: 85%;">
+          <div class="text-xs md:text-sm text-cyan-400 font-bold mb-2 text-center flex items-center justify-center gap-1 text-readable" style="color: #22d3ee;">
+            ℹ️ Pilih satu soal berwarna biru, lalu pilih pasangan jawaban yang tepat di kanan.
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 flex-1 items-center">
+            <div class="space-y-2 flex flex-col justify-center">
+              <div id="matchLeft-7b-1" onclick="selectMatchLeftB('7b-1')" class="p-2.5 bg-blue-950/40 border border-blue-500/30 hover:border-blue-400 rounded cursor-pointer transition-all text-slate-200">
+                <p class="font-bold text-yellow-400 text-readable" style="color: #facc15; margin: 0 0 2px 0;">Soal 1</p>
+                <p class="leading-tight text-xs text-readable" style="margin: 0;">Dua keping koin dilempar bersamaan sekali. Peluang muncul Gambar koin pertama DAN Gambar koin kedua.</p>
+              </div>
+
+              <div id="matchLeft-7b-2" onclick="selectMatchLeftB('7b-2')" class="p-2.5 bg-blue-950/40 border border-blue-500/30 hover:border-blue-400 rounded cursor-pointer transition-all text-slate-200">
+                <p class="font-bold text-yellow-400 text-readable" style="color: #facc15; margin: 0 0 2px 0;">Soal 2</p>
+                <p class="leading-tight text-xs text-readable" style="margin: 0;">Dalam kotak ada 3 bola hitam and 2 putih. Diambil 2 bola berturut-turut TANPA pengembalian. Peluang Hitam lalu Putih.</p>
+              </div>
+
+              <div id="matchLeft-7b-3" onclick="selectMatchLeftB('7b-3')" class="p-2.5 bg-blue-950/40 border border-blue-500/30 hover:border-blue-400 rounded cursor-pointer transition-all text-slate-200">
+                <p class="font-bold text-yellow-400 text-readable" style="color: #facc15; margin: 0 0 2px 0;">Soal 3</p>
+                <p class="leading-tight text-xs text-readable" style="margin: 0;">Dua dadu dilempar sekali bersamaan. Peluang muncul mata dadu 5 pertama DAN ganjil pada dadu kedua.</p>
+              </div>
+            </div>
+
+            <div class="space-y-2 flex flex-col justify-center">
+              <div id="matchRight-7b-B" onclick="selectMatchRightB('7b-B')" class="p-2.5 bg-slate-900 border border-slate-700 hover:border-yellow-400 rounded cursor-pointer transition-all text-center font-bold text-slate-300 text-readable">
+                <span class="text-sm md:text-base">3 / 10</span>
+              </div>
+
+              <div id="matchRight-7b-C" onclick="selectMatchRightB('7b-C')" class="p-3 bg-slate-900 border border-slate-700 hover:border-yellow-400 rounded cursor-pointer transition-all text-center font-bold text-slate-300 text-readable">
+                <span class="text-sm md:text-base">1 / 12</span>
+              </div>
+
+              <div id="matchRight-7b-A" onclick="selectMatchRightB('7b-A')" class="p-3 bg-slate-900 border border-slate-700 hover:border-yellow-400 rounded cursor-pointer transition-all text-center font-bold text-slate-300 text-readable">
+                <span class="text-sm md:text-base">1 / 4</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="matchCompleted7B" class="hidden text-center mt-2 shrink-0">
+            <button onclick="completeMatchStage7B()" class="btn-primary px-8 py-1.5 text-slate-955 font-black text-xs md:text-sm rounded transition-all">
+              DEKRIPSI TOTAL SELESAI ✔️
+            </button>
+          </div>
+        </div>
+      `;
+      selectedLeftMatchIdB = null;
+      matches7B = { '7b-1': false, '7b-2': false, '7b-3': false };
+    }
+
+    const matchPairs7B = {
+      '7b-1': '7b-A',
+      '7b-2': '7b-B',
+      '7b-3': '7b-C'
+    };
+
+    function selectMatchLeftB(id) {
+      if (matches7B[id]) return;
+      playSynthSound('click');
+      
+      if (selectedLeftMatchIdB) {
+        document.getElementById(`matchLeft-${selectedLeftMatchIdB}`).classList.remove('border-yellow-400', 'border-2');
+      }
+      
+      selectedLeftMatchIdB = id;
+      document.getElementById(`matchLeft-${id}`).classList.add('border-yellow-400', 'border-2');
+    }
+
+    function selectMatchRightB(rightId) {
+      if (!selectedLeftMatchIdB) {
+        playSynthSound('wrong');
+        return;
+      }
+
+      const expectedRightId = matchPairs7B[selectedLeftMatchIdB];
+
+      if (rightId === expectedRightId) {
+        playSynthSound('correct');
+        const leftId = selectedLeftMatchIdB;
+        matches7B[leftId] = true;
+
+        document.getElementById(`matchLeft-${leftId}`).className = "p-3 bg-green-950/60 border-2 border-green-500 rounded text-slate-300 cursor-not-allowed transition-all";
+        document.getElementById(`matchRight-${rightId}`).className = "p-3 bg-green-950/60 border-2 border-green-500 rounded text-slate-300 cursor-not-allowed text-center transition-all";
+        
+        selectedLeftMatchIdB = null;
+
+        if (Object.values(matches7B).every(v => v === true)) {
+          launchConfetti();
+          document.getElementById('matchCompleted7B').classList.remove('hidden');
+        }
+      } else {
+        playSynthSound('wrong');
+        document.getElementById(`matchLeft-${selectedLeftMatchIdB}`).classList.remove('border-yellow-400', 'border-2');
+        selectedLeftMatchIdB = null;
+        showModalFeedback(false, "SINKRONISASI SALAH", "Pasangan pecahan nilai peluang kurang tepat. Hitung perkalian peluangnya secara perlahan!");
+      }
+    }
+
+    function completeMatchStage7B() {
+      completeStage('s7b', 30);
+    }
+
+    // --- FUNGSI DETEKSI SYARAT BUKA UJI KOMPETENSI ---
+    function checkUjiKompetensiUnlock() {
+      const completedA = gameState.completedStages.includes('s7a');
+      const completedB = gameState.completedStages.includes('s7b');
+      if (completedA && completedB) {
+        gameState.stages['uji'].locked = false;
+      }
+    }
+
+    // --- 8. STAGE UJI KOMPETENSI AKHIR (10 SOAL, UKURAN DOT PROGRES DAN TEKS DISESUAIKAN) ---
+    const dbUji = [
+      { id: 1, type: "BS", soal: "Dua koin logam dilemparkan serentak. Kejadian munculnya dua sisi Gambar dan kejadian munculnya dua sisi Angka adalah kejadian saling lepas.", kunci: "B", penjelas: "Dua sisi Gambar {G,G} and dua sisi Angka {A,A} tidak mungkin muncul bersamaan dalam satu kali lempar dadu koin (tidak beririsan), sehingga saling lepas." },
+      { id: 2, type: "BS", soal: "Sebuah dadu dilemparkan satu kali. Peluang muncul mata dadu prima atau genap adalah kejadian saling lepas.", kunci: "S", penjelas: "Salah, karena terdapat angka 2 yang merupakan bilangan prima sekaligus genap (ada irisan)." },
+      { id: 3, type: "BS", soal: "Pengambilan dua bola tanpa pengembalian dari kotak berisi kelereng merah dan kuning merupakan contoh kejadian saling bebas.", kunci: "S", penjelas: "Tanpa pengembalian berarti jumlah bola berubah, sehingga mempengaruhi peluang pengambilan berikutnya. Ini adalah kejadian Bersyarat." },
+      { id: 4, type: "BS", soal: "Jika kejadian A memiliki P(A) = 0,4 dan kejadian B saling bebas dengan P(B) = 0,5, maka nilai peluang irisan P(A ∩ B) adalah 0,2.", kunci: "B", penjelas: "P(A ∩ B) = P(A) * P(B) = 0,4 * 0,5 = 0,2. Pernyataan benar." },
+      { id: 5, type: "PG", soal: "Dari seperangkat kartu bridge utuh, diambil satu kartu secara acak. Peluang terambil kartu berwarna merah ATAU kartu As adalah...", opsi: ["26/52", "28/52", "30/52", "32/52", "4/52"], kunci: "B", penjelas: "Kartu Merah = 26. Kartu As = 4. Irisan (As Merah) = 2. Peluang = (26 + 4 - 2) / 52 = 28/52." },
+      { id: 6, type: "PG", soal: "Dua buah dadu dilempar bersama-sama sekali. Peluang munculnya mata dadu berjumlah 5 ATAU 10 adalah...", opsi: ["1/36", "4/36", "3/36", "7/36", "12/36"], kunci: "D", penjelas: "Mata dadu berjumlah 5: {(1,4),(2,3),(3,2),(4,1)} = 4. Berjumlah 10: {(4,6),(5,5),(6,4)} = 3. Saling lepas, Peluang = (4 + 3)/36 = 7/36." },
+      { id: 7, type: "PG", soal: "Sebuah kotak berisi 6 bola merah dan 4 bola biru. Diambil dua bola satu demi satu TANPA pengembalian. Peluang bola pertama merah DAN bola kedua biru adalah...", opsi: ["24/90", "24/100", "10/90", "12/45", "15/90"], kunci: "A", penjelas: "Merah I = 6/10. Biru II (tanpa pengembalian) = 4/9. Peluang = 6/10 * 4/9 = 24/90." },
+      { id: 8, type: "PG", soal: "Dua buah dadu dilemparkan satu kali bersamaan. Peluang muncul mata dadu ganjil pada dadu pertama DAN mata dadu genap pada dadu kedua adalah...", opsi: ["1/4", "1/2", "3/4", "1/3", "1/6"], kunci: "A", penjelas: "Kejadian saling bebas: Dadu I ganjil = 3/6 = 1/2. Dadu II genap = 3/6 = 1/2. Peluang = 1/2 * 1/2 = 1/4." },
+      { id: 9, type: "PG", soal: "Jika P(A) = 0,3; P(B) = 0,6 dan A serta B adalah kejadian saling lepas, hitunglah nilai peluang gabungan P(A ∪ B)!", opsi: ["0,18", "0,90", "0,30", "0,60", "0,45"], kunci: "B", penjelas: "Kejadian saling lepas, maka P(A ∪ B) = P(A) + P(B) = 0,3 + 0,6 = 0,90." },
+      { id: 10, type: "PG", soal: "Dua buah dadu dilemparkan secara bersamaan. Berapakah peluang bahwa jumlah mata dadu yang muncul kurang dari 4 ATAU lebih dari 10?", opsi: ["3/36", "4/36", "5/36", "6/36", "8/36"], kunci: "D", penjelas: "Kurang dari 4 (yaitu 2 dan 3): {(1,1),(1,2),(2,1)} = 3. Lebih dari 10 (yaitu 11 dan 12): {(5,6),(6,5),(6,6)} = 3. Saling lepas, Peluang = (3+3)/36 = 6/36." }
+    ];
+
+    function renderUjiKompetensi(container) {
+      currentUjiIndex = 0;
+      ujiAnswers = Array(10).fill(null);
+      scoreUji = 0;
+      loadUjiQuestion(container);
+    }
+
+    function loadUjiQuestion(container) {
+      container.innerHTML = "";
+      const q = dbUji[currentUjiIndex];
+      const selectedAns = ujiAnswers[currentUjiIndex];
+
+      let progressHtml = `<div class="flex items-center gap-1.5 mb-2 justify-center">`;
+      for (let i = 0; i < 10; i++) {
+        let dotColor = "bg-slate-700 border-slate-600";
+        if (ujiAnswers[i] !== null) dotColor = "bg-cyan-500 border-cyan-400";
+        if (i === currentUjiIndex) dotColor = "bg-yellow-400 border-yellow-300 ring-2 ring-yellow-400/50";
+        progressHtml += `<span class="w-5 h-5 text-xs font-bold text-slate-955 flex items-center justify-center rounded-full border ${dotColor}" style="width: 20px; height: 20px; display: inline-flex; border-style: solid;">${i+1}</span>`;
+      }
+      progressHtml += `</div>`;
+
+      let qBodyHtml = "";
+      if (q.type === "BS") {
+        qBodyHtml = `
+          <div class="flex justify-center gap-4 w-full max-w-sm mx-auto">
+            <button onclick="answerUjiQuestion('B')" class="flex-1 py-3 bg-emerald-950/60 hover:bg-emerald-900 border-2 ${selectedAns === 'B' ? 'border-emerald-400 text-white' : 'border-emerald-600/30 text-slate-300'} rounded font-bold transition-all text-xs md:text-sm">
+              BENAR 🟢
+            </button>
+            <button onclick="answerUjiQuestion('S')" class="flex-1 py-3 bg-rose-950/60 hover:bg-rose-900 border-2 ${selectedAns === 'S' ? 'border-rose-400 text-white' : 'border-rose-600/30 text-slate-300'} rounded font-bold transition-all text-xs md:text-sm">
+              SALAH 🔴
+            </button>
+          </div>
+        `;
+      } else {
+        qBodyHtml = `<div class="grid grid-cols-2 gap-2.5 w-full max-w-md mx-auto text-xs md:text-sm">`;
+        const labels = ['A', 'B', 'C', 'D', 'E'];
+        q.opsi.forEach((op, index) => {
+          const l = labels[index];
+          const isActive = selectedAns === l;
+          qBodyHtml += `
+            <button onclick="answerUjiQuestion('${l}')" class="py-2 px-3 rounded text-left border transition-all ${isActive ? 'bg-cyan-950 border-cyan-400 text-cyan-200 font-bold' : 'bg-slate-900/60 border-slate-700 hover:bg-slate-800 text-slate-300'}">
+              <strong>${l}.</strong> ${op}
+            </button>
+          `;
+        });
+        qBodyHtml += `</div>`;
+      }
+
+      container.innerHTML = `
+        <div class="flex flex-col h-full justify-between p-1" style="max-height: 85%;">
+          <div>
+            ${progressHtml}
+            <div class="glass-panel p-4 rounded-lg border-cyan-500/10 max-w-xl mx-auto my-1" style="border: 1px solid rgba(6, 182, 212, 0.1);">
+              <span class="text-xs text-cyan-400 font-bold font-orbitron text-readable">SOAL ${currentUjiIndex + 1} / 10 (${q.type === 'BS' ? 'Benar/Salah' : 'Pilihan Ganda'})</span>
+              <p class="text-xs md:text-sm text-slate-200 font-semibold mt-1 leading-relaxed text-readable">${q.soal}</p>
+            </div>
+          </div>
+
+          <div class="my-1">
+            ${qBodyHtml}
+          </div>
+
+          <div class="flex items-center justify-between border-t border-slate-800 pt-2 max-w-xl mx-auto w-full text-xs" style="border-top: 1px solid rgba(255,255,255,0.1); width: 100%;">
+            <button onclick="navUji(-1)" ${currentUjiIndex === 0 ? 'disabled' : ''} class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 rounded text-slate-300 text-readable text-xs md:text-sm">
+              ◀️ Sebelum
+            </button>
+
+            ${currentUjiIndex === 9 ? `
+              <button onclick="submitUjiKompetensi()" class="btn-primary px-5 py-1.5 font-extrabold rounded font-orbitron shadow-md text-readable text-xs md:text-sm" style="color: #030712 !important;">
+                KIRIM JAWABAN 📤
+              </button>
+            ` : `
+              <button onclick="navUji(1)" ${selectedAns === null ? 'disabled' : ''} class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 rounded text-slate-300 text-readable text-xs md:text-sm">
+                Berikut ▶️
+              </button>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    // --- FUNGSI NAVIGASI SOAL UJI ---
+    function navUji(dir) {
+      playSynthSound('click');
+      currentUjiIndex += dir;
+      const container = document.getElementById('stageContentArea');
+      loadUjiQuestion(container);
+    }
+
+    // --- FUNGSI MENYIMPAN JAWABAN SOAL UJI KOMPETENSI ---
+    function answerUjiQuestion(ans) {
+      playSynthSound('click');
+      ujiAnswers[currentUjiIndex] = ans;
+      const container = document.getElementById('stageContentArea');
+      loadUjiQuestion(container);
+    }
+
+    // --- FUNGSI SUBMIT JAWABAN UJI KOMPETENSI ---
+    function submitUjiKompetensi() {
+      scoreUji = 0;
+      dbUji.forEach((q, i) => {
+        if (ujiAnswers[i] === q.kunci) {
+          scoreUji += 10;
+        }
+      });
+
+      const lanjutKeEpilog = () => {
+        gameState.stages['epilog'].locked = false;
+        completeStage('uji', 0);
+      };
+
+      const ulangiUji = () => {
+        const container = document.getElementById('stageContentArea');
+        renderUjiKompetensi(container);
+      };
+
+      if (scoreUji >= 70) {
+        playSynthSound('success_level');
+        launchConfetti();
+        showModalFeedback(true, "UJI KOMPETENSI SELESAI!",
+          `Kerja bagus, Agen! Skor akhir Anda: ${scoreUji}%. Pintu gerbang Epilog telah terbuka!`,
+          50, lanjutKeEpilog
+        );
+      } else {
+        playSynthSound('wrong');
+        showModalFeedback(false, "UJI KOMPETENSI SELESAI",
+          `Skor akhir Anda: ${scoreUji}%. Skor ini di bawah 70%. Anda bisa mengulangi Uji Kompetensi untuk hasil lebih baik, atau tetap melanjutkan ke hasil.`,
+          0, ulangiUji, "ULANGI UJI KOMPETENSI 🔁",
+          { text: "LANJUTKAN KE HASIL ➡️", callback: lanjutKeEpilog }
+        );
+      }
+    }
+
+    // --- FUNGSI UNTUK MENAMPILKAN KUIS JEMBATAN STAGE 3 ---
+    function renderKuisJembatan(container) {
+      if (gameState.jembatanStep === 1) {
+        container.innerHTML = `
+          <div class="flex flex-col items-center justify-center p-3 text-xs md:text-sm max-w-xl mx-auto text-center gap-2 max-h-[85%]">
+            <div class="w-10 h-10 bg-yellow-950/30 border border-yellow-500/40 rounded-full flex items-center justify-center text-yellow-400 text-lg animate-bounce" style="width: 40px; height: 40px;">
+              <span>🌉</span>
+            </div>
+            <h4 class="text-sm font-bold text-white font-orbitron text-readable">KUIS JEMBATAN DEKRIPSI (TAHAP 1/2)</h4>
+            <p class="text-cyan-400 font-bold text-xs md:text-sm uppercase tracking-wider text-readable" style="color: #22d3ee; margin:0;">Topik: Aturan Penjumlahan ("ATAU")</p>
+            <p class="text-slate-300 leading-relaxed text-xs md:text-sm text-readable" style="margin: 4px 0 6px 0;">
+              Sebuah dadu bersisi 6 dilempar sekali. Berapakah peluang munculnya mata dadu genap <span class="text-yellow-400 font-bold">ATAU</span> mata dadu bernilai prima 3?
+            </p>
+            
+            <div class="grid grid-cols-2 gap-2.5 w-full my-1 text-left text-xs md:text-sm">
+              <button onclick="checkKuisJembatanStep1('A')" class="option-btn text-readable">
+                <strong>A.</strong> 1/3 (Mutually exclusive)
+              </button>
+              <button onclick="checkKuisJembatanStep1('B')" class="option-btn text-readable">
+                <strong>B.</strong> 2/3 (Genap: {2,4,6} & Prima 3: {3})
+              </button>
+              <button onclick="checkKuisJembatanStep1('C')" class="option-btn text-readable">
+                <strong>C.</strong> 1/2 (Peluang dasar tunggal)
+              </button>
+              <button onclick="checkKuisJembatanStep1('D')" class="option-btn text-readable">
+                <strong>D.</strong> 5/6 (Semua kemungkinan)
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="flex flex-col items-center justify-center p-4 text-xs md:text-sm max-w-xl mx-auto text-center gap-2 max-h-[85%]">
+            <div class="w-10 h-10 bg-cyan-950/30 border border-cyan-500/40 rounded-full flex items-center justify-center text-cyan-400 text-lg animate-pulse" style="width: 40px; height: 40px;">
+              <span>🔗</span>
+            </div>
+            <h4 class="text-sm font-bold text-white font-orbitron text-readable">KUIS JEMBATAN DEKRIPSI (TAHAP 2/2)</h4>
+            <p class="text-yellow-400 font-bold text-xs md:text-sm uppercase tracking-wider text-readable" style="color: #facc15; margin:0;">Topik: Aturan Perkalian ("DAN")</p>
+            <p class="text-slate-300 leading-relaxed text-xs md:text-sm text-readable" style="margin: 4px 0 6px 0;">
+              Sebuah koin adil (Gambar/Angka) and sebuah dadu sisi 6 dilempar bersamaan once. Berapa peluang munculnya Gambar pada koin <span class="text-cyan-400 font-bold">DAN</span> mata dadu bernilai genap?
+            </p>
+            
+            <div class="grid grid-cols-2 gap-2.5 w-full my-1 text-left text-xs md:text-sm">
+              <button onclick="checkKuisJembatanStep2('A')" class="option-btn text-readable">
+                <strong>A.</strong> 1/2 (Kejadian koin saja)
+              </button>
+              <button onclick="checkKuisJembatanStep2('B')" class="option-btn text-readable">
+                <strong>B.</strong> 1/3 (Penjumlahan terbalik)
+              </button>
+              <button onclick="checkKuisJembatanStep2('C')" class="option-btn text-readable">
+                <strong>C.</strong> 1/4 (P(Gambar) 1/2 &times; P(Genap) 1/2 = 1/4)
+              </button>
+              <button onclick="checkKuisJembatanStep2('D')" class="option-btn text-readable">
+                <strong>D.</strong> 3/4 (Peluang gabungan)
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // --- 9. EPILOG & LAPORAN AKHIR (SERTIFIKAT) ---
+    function renderEpilogSelesai(container) {
+      container.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 h-full max-h-[95%] items-stretch p-1 text-xs md:text-sm">
+          <div class="glass-panel p-4 rounded-lg border-green-500/30 flex flex-col justify-between h-full" style="border-color: rgba(34, 197, 94, 0.3);">
+            <div>
+              <h4 class="text-green-400 font-bold font-orbitron mb-2 flex items-center gap-1.5 text-readable text-xs md:text-sm">
+                <span>🪐</span> STATUS SISTEM: TRANSMISI HIJAU
+              </h4>
+              <p class="leading-relaxed text-slate-300 text-readable text-xs md:text-sm">
+                Sistem utama enkripsi Planet <span class="text-cyan-400 font-bold">Arcana-9</span> telah sepenuhnya dipulihkan! 
+                Aliran energi numerasi peluang berhasil menstabilkan fluktuasi medan magnetik planet dari ancaman kehancuran total.
+              </p>
+            </div>
+            <div class="text-xs md:text-sm text-yellow-400 font-semibold bg-slate-900/40 p-2 rounded border mt-2 text-readable" style="border-color: rgba(234, 179, 8, 0.1);">
+              🎖️ Julukan Anda: <span id="epilogJulukan" class="font-bold">Agen Utama Dekripsi Peluang</span>
+            </div>
+          </div>
+
+          <div class="glass-panel p-4 rounded-lg border-yellow-500/20 flex flex-col justify-between h-full" style="border-color: rgba(234, 179, 8, 0.2);">
+            <div class="text-center py-2">
+              <span style="font-size: 2.5rem; display: block; margin-bottom: 8px;">📜</span>
+              <h4 class="text-white font-bold font-orbitron mb-1 text-sm text-readable">SERTIFIKAT KREDENSIAL</h4>
+              <p class="text-slate-400 text-xs text-readable">Komando Pusat Antariksa secara resmi menerbitkan Sertifikat Kelulusan atas nama Agen Numerasi aktif.</p>
+            </div>
+            
+            <button onclick="generateCertificate()" class="btn-primary w-full font-orbitron py-2.5 text-slate-955 font-black text-xs md:text-sm rounded transition-all tracking-widest uppercase mt-4 shrink-0">
+              BUKA SERTIFIKAT KELULUSAN 📄
+            </button>
+          </div>
+        </div>
+      `;
+      
+      let julukan = "Agen Utama Dekripsi Peluang";
+      if (scoreUji === 100) julukan = "Komandan Tertinggi Peluang Galaksi";
+      else if (scoreUji >= 80) julukan = "Insinyur Logika Numerasi Ulung";
+      
+      document.getElementById('epilogJulukan').textContent = julukan;
+    }
+
+    function generateCertificate() {
+      playSynthSound('success_level');
+      
+      let julukan = "Agen Utama Dekripsi Peluang";
+      if (scoreUji === 100) julukan = "Komandan Tertinggi Peluang Galaksi";
+      else if (scoreUji >= 80) julukan = "Insinyur Logika Numerasi Ulung";
+
+      const container = document.getElementById('stageContentArea');
+      container.innerHTML = `
+        <div id="certificatePrintable" class="w-full max-w-xl mx-auto bg-white text-slate-900 p-6 rounded-lg border-8 border-cyan-800 shadow-xl flex flex-col justify-between relative overflow-hidden h-[95%]" style="background: #ffffff; border-color: #155e75; border-style: solid; box-sizing: border-box; color: #0f172a;">
+          <div class="absolute -right-16 -bottom-16 w-44 h-44 rounded-full border-[12px] border-cyan-100 opacity-25" style="border-style: solid; border-radius: 50%; width: 176px; height: 176px;"></div>
+          
+          <div class="text-center border-b-2 border-cyan-900/20 pb-3" style="border-bottom: 2px solid rgba(8, 51, 68, 0.2); padding-bottom: 0.75rem;">
+            <h2 class="text-xl md:text-2xl font-extrabold font-orbitron tracking-wider" style="color: #083344; margin: 0;">SERTIFIKAT KREDENSIAL AGEN</h2>
+            <p class="text-xs uppercase tracking-widest font-bold" style="color: #64748b; margin: 4px 0 0 0;">KOMANDO PUSAT AKADEMI NUMERASI ANTARIKSA SMAN 1 NGAMPRAH</p>
+          </div>
+
+          <div class="text-center my-2 space-y-2 flex-1 flex flex-col justify-center">
+            <p class="text-xs md:text-sm text-slate-500">Dengan bangga mempersembahkan penghargaan ini kepada:</p>
+            <h3 class="text-2xl font-black font-orbitron underline leading-none uppercase" style="color: #083344; margin: 5px 0;">${gameState.user.nama}</h3>
+            <p class="text-sm font-bold text-slate-700">Skuadron/Kelas: ${gameState.user.kelas}</p>
+            <p class="text-xs md:text-sm text-slate-600 max-w-md mx-auto leading-relaxed" style="color: #475569; margin: 8px auto;">
+              Telah lulus melampaui seluruh kualifikasi dekripsi numerasi pada rintangan simulasi <strong>Misi Penyelamatan Planet Arcana-9</strong> materi Peluang Kejadian Saling Lepas dan Saling Bebas dengan perolehan hasil:
+            </p>
+
+            <div class="grid grid-cols-3 gap-2 w-full max-w-xs mx-auto text-center pt-1" style="margin: 0 auto; width: 100%;">
+              <div class="p-1.5 bg-slate-100 rounded border border-slate-200">
+                <span class="block text-[10px] text-slate-400 font-bold" style="color: #94a3b8; display: block;">SKOR UJI</span>
+                <span class="text-sm md:text-base font-black text-cyan-950">${scoreUji}%</span>
+              </div>
+              <div class="p-1.5 bg-slate-100 rounded border border-slate-200">
+                <span class="block text-[10px] text-slate-400 font-bold">TOTAL BINTANG</span>
+                <span class="text-sm md:text-base font-black text-yellow-600" style="color: #ca8a04;">${gameState.stars}</span>
+              </div>
+              <div class="p-1.5 bg-slate-100 rounded border border-slate-200">
+                <span class="block text-[10px] text-slate-400 font-bold">JULUKAN</span>
+                <span class="text-xs font-bold text-emerald-700 leading-none truncate block mt-0.5" title="${julukan}" style="display: block; margin-top: 2px;">${julukan}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between border-t border-slate-200 pt-3 text-[10px] md:text-xs text-slate-500" style="border-top: 1px solid #e2e8f0; padding-top: 0.75rem; width: 100%;">
+            <div style="text-align: left;">
+              <p class="font-bold text-slate-700" style="margin: 0;">Mengetahui,</p>
+              <p class="font-bold text-slate-900" style="margin: 16px 0 0 0; color: #0f172a;">Ari Kusriani Iman, S.Pd</p>
+              <p class="text-[10px]">Guru Matematika SMAN 1 Ngamprah</p>
+            </div>
+            
+            <div class="text-right">
+              <button onclick="window.print()" class="btn-primary font-bold rounded-full shadow-md flex items-center gap-1 transition-all" style="padding: 6px 16px; border-radius: 9999px; background: #164e63; color: #ffffff;">
+                🖨️ Cetak Laporan
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // --- 10. ENGINE PROGRESS & PENYELESAIAN STAGE ---
+    function completeStage(stageId, starReward) {
+      if (!gameState.completedStages.includes(stageId)) {
+        gameState.completedStages.push(stageId);
+        gameState.stars += starReward;
+        document.getElementById('hudStars').textContent = gameState.stars;
+      }
+
+      // Aturan Unlock yang Kokoh untuk Seluruh Alur Main & Cabang
+      if (stageId === 's1') {
+        gameState.stages['s2'].locked = false;
+      } else if (stageId === 's2') {
+        gameState.stages['s3'].locked = false;
+      } else if (stageId === 's3') {
+        gameState.stages['s4a'].locked = false;
+        gameState.stages['s4b'].locked = false;
+      } else if (stageId === 's4a') {
+        gameState.stages['s5a'].locked = false;
+      } else if (stageId === 's5a') {
+        gameState.stages['s6a'].locked = false;
+      } else if (stageId === 's6a') {
+        gameState.stages['s7a'].locked = false;
+      } else if (stageId === 's4b') {
+        gameState.stages['s5b'].locked = false;
+      } else if (stageId === 's5b') {
+        gameState.stages['s6b'].locked = false;
+      } else if (stageId === 's6b') {
+        gameState.stages['s7b'].locked = false;
+      }
+
+      checkUjiKompetensiUnlock();
+      playSynthSound('success_level');
+
+      showModalFeedback(true, "DEKRIPSI SUKSES!", `Anda berhasil menyelesaikan Planet ${gameState.stages[stageId].name}! Mengarahkan kembali ke koordinat navigasi galaksi.`, 0, () => {
+        backToMap();
+      });
+    }
+
+    // --- 11. FEEDBACK MODAL POPUP ---
+    let activeFeedbackCallback = null;
+    let activeFeedbackCallback2 = null;
+    function showModalFeedback(isCorrect, title, desc, starsReward = 0, callback = null, btn1Label = null, secondButton = null) {
+      const modal = document.getElementById('feedbackModal');
+      const border = document.getElementById('feedbackBorder');
+      const iconContainer = document.getElementById('feedbackIconContainer');
+      const titleEl = document.getElementById('feedbackTitle');
+      const descEl = document.getElementById('feedbackDesc');
+      const rewardEl = document.getElementById('feedbackStarsReward');
+      const btn1 = document.getElementById('feedbackActionBtn');
+      const btn2 = document.getElementById('feedbackActionBtn2');
+
+      activeFeedbackCallback = callback;
+      btn1.textContent = btn1Label || 'KEMBALI KE PETA 🗺️';
+
+      if (secondButton) {
+        activeFeedbackCallback2 = secondButton.callback || null;
+        btn2.textContent = secondButton.text;
+        btn2.classList.remove('hidden');
+      } else {
+        activeFeedbackCallback2 = null;
+        btn2.classList.add('hidden');
+      }
+
+      if (isCorrect) {
+        border.className = "glass-panel-heavy p-6 rounded-xl border-2 border-green-500 w-full max-w-sm text-center transform scale-100 transition-all";
+        iconContainer.innerHTML = `✅`;
+        titleEl.textContent = title;
+        titleEl.className = "text-lg font-bold font-orbitron tracking-wider text-green-400 mb-2 text-readable";
+        
+        if (starsReward > 0) {
+          rewardEl.classList.remove('hidden');
+          rewardEl.classList.add('flex');
+          rewardEl.querySelector('span').textContent = `+${starsReward} Bintang Ditambahkan!`;
+          gameState.stars += starsReward;
+          document.getElementById('hudStars').textContent = gameState.stars;
+        } else {
+          rewardEl.classList.add('hidden');
+        }
+      } else {
+        border.className = "glass-panel-heavy p-6 rounded-xl border-2 border-red-500 w-full max-w-sm text-center transform scale-100 transition-all";
+        iconContainer.innerHTML = `❌`;
+        titleEl.textContent = title;
+        titleEl.className = "text-lg font-bold font-orbitron tracking-wider text-red-500 mb-2 text-readable";
+        rewardEl.classList.add('hidden');
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeFeedbackModal() {
+      playSynthSound('click');
+      document.getElementById('feedbackModal').classList.add('hidden');
+      document.getElementById('feedbackActionBtn2').classList.add('hidden');
+      const cb = activeFeedbackCallback;
+      activeFeedbackCallback = null;
+      activeFeedbackCallback2 = null;
+      if (cb) {
+        cb(); // Menjalankan callback
+      } else {
+        backToMap();
+      }
+    }
+
+    function closeFeedbackModal2() {
+      playSynthSound('click');
+      document.getElementById('feedbackModal').classList.add('hidden');
+      document.getElementById('feedbackActionBtn2').classList.add('hidden');
+      const cb2 = activeFeedbackCallback2;
+      activeFeedbackCallback = null;
+      activeFeedbackCallback2 = null;
+      if (cb2) {
+        cb2(); // Menjalankan callback tombol kedua
+      } else {
+        backToMap();
+      }
+    }
+
+    // --- 12. INFO & DEV MODAL ---
+    function openInfoModal() {
+      playSynthSound('click');
+      document.getElementById('infoModal').classList.remove('hidden');
+    }
+    function closeInfoModal() {
+      playSynthSound('click');
+      document.getElementById('infoModal').classList.add('hidden');
+    }
+
+    // --- PROFIL PENGEMBANG ---
+    function openDevModal() {
+      playSynthSound('click');
+      document.getElementById('devModal').classList.remove('hidden');
+    }
+    function closeDevModal() {
+      playSynthSound('click');
+      document.getElementById('devModal').classList.add('hidden');
+    }
+
+    // --- KONTROL TOMBOL KELUAR ---
+    function triggerExitConfirm() {
+      playSynthSound('click');
+      document.getElementById('exitConfirmModal').classList.remove('hidden');
+    }
+    function closeExitConfirm() {
+      playSynthSound('click');
+      document.getElementById('exitConfirmModal').classList.add('hidden');
+    }
+    function exitGameConfirmed() {
+      gameState.completedStages = [];
+      gameState.stars = 0;
+      gameState.currentStageId = null;
+      gameState.unlockedBranches = false;
+      gameState.jembatanStep = 1;
+      
+      Object.keys(gameState.stages).forEach(k => {
+        if (k !== 's1') gameState.stages[k].locked = true;
+      });
+
+      document.getElementById('exitConfirmModal').classList.add('hidden');
+      document.getElementById('gameHUD').classList.add('hidden');
+      document.getElementById('gameFooter').classList.add('hidden');
+      document.getElementById('screenAdventureMap').classList.add('hidden');
+      document.getElementById('screenStageFrame').classList.add('hidden');
+      document.getElementById('screenMainMenu').classList.remove('hidden');
+      
+      if (gameState.bgMusic) {
+        gameState.bgMusic.pause();
+        gameState.isMusicPlaying = false;
+        document.getElementById('audioIcon').textContent = '🔇';
+      }
+    }
+
+    // --- 13. EFEK KANVAS PARTIKEL (CONFETTI) ---
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Fungsi Confetti untuk luring murni
+    function launchConfetti() {
+      const colors = ['#00f2fe', '#4facfe', '#eab308', '#22c55e', '#3b82f6'];
+      for (let i = 0; i < 60; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height + 10,
+          vx: (Math.random() - 0.5) * 15,
+          vy: -Math.random() * 20 - 5,
+          size: Math.random() * 5 + 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          gravity: 0.3
+        });
+      }
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += p.gravity;
+        p.alpha -= 0.015;
+
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (p.alpha <= 0 || p.y > canvas.height + 20) {
+          particles.splice(i, 1);
+        }
+      }
+      
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+  </script>
+</body>
+</html>
